@@ -3,99 +3,109 @@ module.exports = (grunt) ->
   # Unified Watch Object
   watchFiles =
     sourceFiles: [
-      "Gruntfile.coffee"
-      "src/**/*.coffee"
+      'server.coffee'
+      '**/*.coffee'
     ]
     serverFiles: [
-      "app/**/*.js"
+      'app/**/*.js'
     ]
-    mochaTests: ["test/**/*.coffee"]
+    mochaTests: ['test/**/*.coffee']
   
   # Project Configuration
   grunt.initConfig
-    pkg: grunt.file.readJSON("package.json")
+    pkg: grunt.file.readJSON('package.json')
     watch:
       sourceFiles:
         files: watchFiles.sourceFiles
-        tasks: ["coffelint"]
+        tasks: ['coffeelint', 'coffee']
         options:
           livereload: true
 
     coffeelint:
-      gruntfile: ['Gruntfile.coffee']
       sources: ['src/**/*.coffee']
       tests: ['test/**/*.coffee']
       options:
         configFile: 'coffeelint.json'
 
+    coffee:
+      sourceFiles:
+        src: watchFiles.sourceFiles
+        cwd: 'src/'
+        dest: 'app/'
+        ext: '.js'
+        expand: true
+        flatten: false
+      options:
+        bare: true  # not needed for node.js
+
     nodemon:
       dev:
-        script: "server.js"
+        script: 'app/server.js'
         options:
-          nodeArgs: ["--debug"]
-          ext: "js"
+          nodeArgs: ['--debug']
+          ext: 'js'
           watch: watchFiles.serverFiles
 
-    "node-inspector":
+    'node-inspector':
       custom:
         options:
-          "web-port": 1337
-          "web-host": "localhost"
-          "debug-port": 5858
-          "save-live-edit": true
-          "no-preload": true
-          "stack-trace-limit": 50
+          'web-port': 1337
+          'web-host': 'localhost'
+          'debug-port': 5858
+          'save-live-edit': true
+          'no-preload': true
+          'stack-trace-limit': 50
           hidden: []
 
     concurrent:
       default: [
-        "nodemon"
-        "watch"
+        'nodemon'
+        'watch'
       ]
       debug: [
-        "nodemon"
-        "watch"
-        "node-inspector"
+        'nodemon'
+        'watch'
+        'node-inspector'
       ]
       options:
         logConcurrentOutput: true
 
     env:
       test:
-        NODE_ENV: "test"
+        NODE_ENV: 'test'
 
     mochaTest:
       src: watchFiles.mochaTests
       options:
-        reporter: "spec"
-        require: ["coffee-script/register", "server.js"]
+        reporter: 'spec'
+        require: ['coffee-script/register', 'app/server.js']
 
   # Load NPM tasks
-  require("load-grunt-tasks") grunt
-  
+  require('load-grunt-tasks') grunt
+
   # Making grunt default to force in order not to break the project.
-  grunt.option "force", true
+  grunt.option 'force', true
   
   # Default task(s).
-  grunt.registerTask "default", [
-    "lint"
-    "concurrent:default"
+  grunt.registerTask 'default', [
+    'lint'
+    'concurrent:default'
   ]
   
   # Debug task.
-  grunt.registerTask "debug", [
-    "lint"
-    "concurrent:debug"
+  grunt.registerTask 'debug', [
+    'lint'
+    'concurrent:debug'
   ]
   
   # Lint task(s).
-  grunt.registerTask "lint", [
-    "coffeelint"
+  grunt.registerTask 'lint', [
+    'coffeelint'
   ]
   
   # Test task.
-  grunt.registerTask "test", [
-    "env:test"
-    "mochaTest"
+  grunt.registerTask 'test', [
+    'env:test'
+    'mochaTest'
   ]
   return
