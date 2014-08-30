@@ -12,4 +12,5 @@ server = net.createServer (client) ->
   new Echo(client)
 
 server.listen config.serverPort, ->
-  console.log "server start"
+  console.log "server started"
+  console.log "server listening on port #{config.serverPort}"

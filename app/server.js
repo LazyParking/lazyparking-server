@@ -15,5 +15,6 @@ server = net.createServer(function(client) {
 });
 
 server.listen(config.serverPort, function() {
-  return console.log("server start");
+  console.log("server started");
+  return console.log("server listening on port " + config.serverPort);
 });
