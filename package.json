@@ -1,29 +1,20 @@
 {
-  "name": "lazypark-server",
-  "version": "0.1.0",
+  "name": "lazyparking-server",
+  "version": "0.0.0",
   "description": "The Server scripts for Lazy Park",
-  "main": "server.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "grunt test",
-    "start": "node app/server.js"
-  },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/LazyParking/lazyparking-server.git"
   },
-  "keywords": [
-    "parking",
-    "nodejs"
-  ],
   "author": "Paulo Diovani",
   "license": "GPLv3",
   "bugs": {
     "url": "https://github.com/LazyParking/lazyparking-server/issues"
   },
-  "homepage": "https://github.com/LazyParking/lazyparking-server",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
   "devDependencies": {
     "chai": "^1.9.1",
     "coffeelint": "^1.5.6",
@@ -37,5 +28,14 @@
     "grunt-node-inspector": "^0.1.5",
     "grunt-nodemon": "^0.3.0",
     "load-grunt-tasks": "^0.6.0"
+  },
+  "dependencies": {
+    "express": "~4.9.0",
+    "body-parser": "~1.8.1",
+    "cookie-parser": "~1.3.3",
+    "morgan": "~1.3.0",
+    "serve-favicon": "~2.1.3",
+    "debug": "~2.0.0",
+    "jade": "~1.6.0"
   }
 }
