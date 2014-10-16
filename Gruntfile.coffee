@@ -87,7 +87,7 @@ module.exports = (grunt) ->
       src: ['test/**/*.coffee']
       options:
         reporter: 'spec'
-        require: ['coffee-script/register']
+        require: ['coffee-script/register', 'bin/www']
 
   # Load NPM tasks
   require('load-grunt-tasks') grunt
