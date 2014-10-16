@@ -1,10 +1,29 @@
-express = require("express")
-path = require("path")
-favicon = require("serve-favicon")
-logger = require("morgan")
+express      = require("express")
+path         = require("path")
+favicon      = require("serve-favicon")
+logger       = require("morgan")
 cookieParser = require("cookie-parser")
-bodyParser = require("body-parser")
-app = express()
+bodyParser   = require("body-parser")
+mongoose     = require("mongoose")
+
+app          = express()
+
+###
+Connect to mongodb
+###
+mongodb_uri = "
+  mongodb://#{process.env.MONGODB_USER}:#{process.env.MONGODB_PASS}
+  @#{process.env.MONGODB_SERVER}:#{process.env.MONGODB_PORT}
+  /#{process.env.MONGODB_NAME}"
+mongoose.connect mongodb_uri, {}, (err) ->
+  if err
+    console.error "Can't connect to MongoDb: #{err}"
+    return
+  console.log "MongoDb connected!"
+
+# Add test data to database
+if process.env.NODE_ENV == 'dev'
+  require('./config/seed')
 
 # view engine setup
 app.set "views", path.join(__dirname, "views")

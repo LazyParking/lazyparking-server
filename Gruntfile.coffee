@@ -71,10 +71,17 @@ module.exports = (grunt) ->
         add:
           HTTP_PORT: 3000
           SERV_PORT: 3030
+          MONGODB_USER: ''
+          MONGODB_PASS: ''
+          MONGODB_SERVER: 'localhost'
+          MONGODB_PORT: 27017
+          MONGODB_NAME: 'lazypark'
       dev:
         NODE_ENV: 'dev'
+        MONGODB_NAME: 'lazypark-dev'
       test:
         NODE_ENV: 'test'
+        MONGODB_NAME: 'lazypark-test'
 
     mochaTest:
       src: ['test/**/*.coffee']
@@ -114,7 +121,7 @@ module.exports = (grunt) ->
       'env:dev'
       'concurrent:debug'
     ]
-  
+
   # Lint task(s).
   grunt.registerTask 'lint', [
     'coffeelint'

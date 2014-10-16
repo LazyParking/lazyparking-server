@@ -1,4 +1,4 @@
-var app, bodyParser, cookieParser, express, favicon, logger, path;
+var app, bodyParser, cookieParser, express, favicon, logger, mongodb_uri, mongoose, path;
 
 express = require("express");
 
@@ -12,7 +12,28 @@ cookieParser = require("cookie-parser");
 
 bodyParser = require("body-parser");
 
+mongoose = require("mongoose");
+
 app = express();
+
+
+/*
+Connect to mongodb
+ */
+
+mongodb_uri = "mongodb://" + process.env.MONGODB_USER + ":" + process.env.MONGODB_PASS + " @" + process.env.MONGODB_SERVER + ":" + process.env.MONGODB_PORT + " /" + process.env.MONGODB_NAME;
+
+mongoose.connect(mongodb_uri, {}, function(err) {
+  if (err) {
+    console.error("Can't connect to MongoDb: " + err);
+    return;
+  }
+  return console.log("MongoDb connected!");
+});
+
+if (process.env.NODE_ENV === 'dev') {
+  require('./config/seed');
+}
 
 app.set("views", path.join(__dirname, "views"));
 
