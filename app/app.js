@@ -23,13 +23,7 @@ Connect to mongodb
 
 mongodb_uri = "mongodb://" + process.env.MONGODB_USER + ":" + process.env.MONGODB_PASS + " @" + process.env.MONGODB_SERVER + ":" + process.env.MONGODB_PORT + " /" + process.env.MONGODB_NAME;
 
-mongoose.connect(mongodb_uri, {}, function(err) {
-  if (err) {
-    console.error("Can't connect to MongoDb: " + err);
-    return;
-  }
-  return console.log("MongoDb connected!");
-});
+mongoose.connect(mongodb_uri);
 
 if (process.env.NODE_ENV === 'dev') {
   require('./config/seed');

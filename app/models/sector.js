@@ -4,14 +4,26 @@ mongoose = require("mongoose");
 
 Schema = mongoose.Schema;
 
-Box = require('./box');
+Box = require("./box");
 
 BoxSchema = Box.schema;
 
 SectorSchema = new Schema({
-  id: Number,
+  sectorId: {
+    type: Number,
+    required: true,
+    unique: true
+  },
   name: String,
-  boxes: [BoxSchema]
+  orphan: {
+    type: Boolean,
+    "default": false
+  },
+  boxes: [BoxSchema],
+  created: {
+    type: Date,
+    "default": Date.now
+  }
 });
 
 module.exports = mongoose.model('Sector', SectorSchema);
