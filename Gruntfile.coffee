@@ -1,51 +1,46 @@
 module.exports = (grunt) ->
-  
-  # Unified Watch Object
-  watchFiles =
-    sourceFiles: [
-      'server.coffee'
-      '**/*.coffee'
-    ]
-    serverFiles: [
-      'app/**/*.js'
-    ]
-    mochaTests: ['test/**/*.coffee']
-  
   # Project Configuration
   grunt.initConfig
     pkg: grunt.file.readJSON('package.json')
+
+    # Watch for files changing
     watch:
       sourceFiles:
-        files: watchFiles.sourceFiles
+        files: ['app.coffee/**/*.coffee']
         tasks: ['coffeelint', 'coffee']
         options:
           livereload: true
 
+    # check source syntax
     coffeelint:
-      sources: ['src/**/*.coffee']
+      sources: ['app.coffee/**/*.coffee']
       tests: ['test/**/*.coffee']
       options:
         configFile: 'coffeelint.json'
 
+    # Compile sources
     coffee:
+      options:
+        bare: true  # not needed for node.js
+        sourceMap: grunt.option('sourceMaps')
       sourceFiles:
-        src: watchFiles.sourceFiles
-        cwd: 'src/'
+        src: ['**/*.coffee']
+        cwd: 'app.coffee/'
         dest: 'app/'
         ext: '.js'
         expand: true
         flatten: false
-      options:
-        bare: true  # not needed for node.js
 
+    # Restart server with nodemon
     nodemon:
       dev:
-        script: 'app/server.js'
+        script: 'bin/www'
         options:
           nodeArgs: ['--debug']
           ext: 'js'
-          watch: watchFiles.serverFiles
+          watch: ['app/**/*.js']
 
+    # Run node inspector for debug
     'node-inspector':
       custom:
         options:
@@ -58,7 +53,7 @@ module.exports = (grunt) ->
           hidden: []
 
     concurrent:
-      default: [
+      serve: [
         'nodemon'
         'watch'
       ]
@@ -68,36 +63,65 @@ module.exports = (grunt) ->
         'node-inspector'
       ]
       options:
+        limit: 3
         logConcurrentOutput: true
 
     env:
+      options:
+        add:
+          HTTP_PORT: 3000
+          SERV_PORT: 3030
+          MONGODB_USER: ''
+          MONGODB_PASS: ''
+          MONGODB_SERVER: 'localhost'
+          MONGODB_PORT: 27017
+          MONGODB_NAME: 'lazypark'
+      dev:
+        NODE_ENV: 'dev'
+        MONGODB_NAME: 'lazypark-dev'
       test:
         NODE_ENV: 'test'
+        MONGODB_NAME: 'lazypark-test'
 
     mochaTest:
-      src: watchFiles.mochaTests
+      src: ['test/**/*.coffee']
       options:
         reporter: 'spec'
-        require: ['coffee-script/register', 'app/server.js']
+        require: ['coffee-script/register', 'bin/www']
 
   # Load NPM tasks
   require('load-grunt-tasks') grunt
 
   # Making grunt default to force in order not to break the project.
-  grunt.option 'force', true
+  # grunt.option 'force', true
   
   # Default task(s).
   grunt.registerTask 'default', [
+    'build'
+  ]
+
+  grunt.registerTask 'build', [
     'lint'
-    'concurrent:default'
+    'coffee'
+  ]
+
+  grunt.registerTask 'serve', [
+    'build'
+    'env:dev'
+    'concurrent:serve'
   ]
   
   # Debug task.
-  grunt.registerTask 'debug', [
-    'lint'
-    'concurrent:debug'
-  ]
-  
+  grunt.registerTask 'debug', ->
+    if not grunt.option 'sourceMaps'
+      grunt.log.subhead 'You may want to use --sourceMaps option'
+
+    grunt.task.run [
+      'build'
+      'env:dev'
+      'concurrent:debug'
+    ]
+
   # Lint task(s).
   grunt.registerTask 'lint', [
     'coffeelint'
