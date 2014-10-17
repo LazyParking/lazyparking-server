@@ -1,25 +1,22 @@
-var Box, BoxSchema, Schema, SectorSchema, mongoose;
+var Schema, SectorSchema, mongoose;
 
 mongoose = require("mongoose");
 
 Schema = mongoose.Schema;
 
-Box = require("./box");
-
-BoxSchema = Box.schema;
-
 SectorSchema = new Schema({
-  sectorId: {
+  _id: {
     type: Number,
     required: true,
     unique: true
   },
   name: String,
-  orphan: {
-    type: Boolean,
-    "default": false
-  },
-  boxes: [BoxSchema],
+  boxes: [
+    {
+      type: Number,
+      ref: 'Box'
+    }
+  ],
   created: {
     type: Date,
     "default": Date.now

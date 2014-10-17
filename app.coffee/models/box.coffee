@@ -2,9 +2,9 @@ mongoose = require("mongoose")
 Schema   = mongoose.Schema
 
 BoxSchema = new Schema
-  boxId: {type: Number, required: true}
+  _id: {type: Number, required: true}
   avaiable: {type: Boolean, default: false}
-  droneId: {type: Number, required: true}
+  droneId: {type: Number, required: true}   # Maybe should be another schema
   created: {type: Date, default: Date.now}
 
 module.exports = mongoose.model 'Box', BoxSchema

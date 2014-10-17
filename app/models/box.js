@@ -5,7 +5,7 @@ mongoose = require("mongoose");
 Schema = mongoose.Schema;
 
 BoxSchema = new Schema({
-  boxId: {
+  _id: {
     type: Number,
     required: true
   },
