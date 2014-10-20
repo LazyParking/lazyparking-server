@@ -34,7 +34,7 @@ describe 'Box', ->
   it 'find boxes wherever they are', (done) ->
     Box.find (err, data) ->
       expect(err).to.be.null
-      expect(data).to.be.a 'array'
+      expect(data).to.be.an 'array'
       expect(data).to.be.not.empty
       done()
 

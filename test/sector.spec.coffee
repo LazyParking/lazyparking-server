@@ -15,7 +15,7 @@ describe 'Sector', ->
   it 'has no sectors', (done) ->
     Sector.find (err, data) ->
       expect(err).to.be.null
-      expect(data).to.be.a 'array'
+      expect(data).to.be.an 'array'
       expect(data).to.be.empty
       done()
 
@@ -51,7 +51,7 @@ describe 'Sector', ->
   it 'has some sectors', (done) ->
     Sector.find (err, data) ->
       expect(err).to.be.null
-      expect(data).to.be.a 'array'
+      expect(data).to.be.an 'array'
       expect(data).to.be.not.empty
       for sector in data
         expect(sector).to.be.instanceof Sector
@@ -68,7 +68,7 @@ describe 'Sector', ->
       Sector.find {_id: 0x23}, (err, data) ->
         sector = data[0]
         expect(sector).to.be.instanceof Sector
-        expect(sector.boxes).to.be.a 'array'
+        expect(sector.boxes).to.be.an 'array'
         expect(sector.boxes).to.have.length(0)
         done()
 
@@ -107,7 +107,7 @@ describe 'Sector', ->
   it 'has three boxes on 0x23', (done) ->
     Sector.find {_id: 0x23}, (err, data) ->
       sector = data[0]
-      expect(sector.boxes).to.be.a 'array'
+      expect(sector.boxes).to.be.an 'array'
       expect(sector.boxes).to.have.length(3)
       done()
 
@@ -116,7 +116,7 @@ describe 'Sector', ->
     .populate('boxes')
     .exec (err, data) ->
       sector = data[0]
-      expect(sector.boxes).to.be.a 'array'
+      expect(sector.boxes).to.be.an 'array'
       expect(sector.boxes).to.be.not.empty
       for box in sector.boxes
         expect(box).to.instanceof Box
