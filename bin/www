@@ -16,4 +16,9 @@ var http_server = app.listen(app.get('port'), function() {
 Start the backend services
 for communication with arduino
  */
-server.start();
+server.setPort(process.env.SERV_PORT || 3030);
+
+server.start(function() {
+    debug("Socket server started");
+    debug("Socket server listening on port " + server.getPort());
+});

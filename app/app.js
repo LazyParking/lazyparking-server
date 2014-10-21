@@ -1,4 +1,4 @@
-var app, bodyParser, cookieParser, express, favicon, logger, mongodb_uri, mongoose, path;
+var app, bodyParser, cfgMongo, cookieParser, express, favicon, logger, mongodb_uri, mongoose, path;
 
 express = require("express");
 
@@ -14,6 +14,8 @@ bodyParser = require("body-parser");
 
 mongoose = require("mongoose");
 
+cfgMongo = require("./config/mongodb");
+
 app = express();
 
 
@@ -21,7 +23,7 @@ app = express();
 Connect to mongodb
  */
 
-mongodb_uri = "mongodb://" + process.env.MONGODB_USER + ":" + process.env.MONGODB_PASS + " @" + process.env.MONGODB_SERVER + ":" + process.env.MONGODB_PORT + " /" + process.env.MONGODB_NAME;
+mongodb_uri = "mongodb://" + cfgMongo.user + ":" + cfgMongo.pass + "@" + cfgMongo.server + ":" + cfgMongo.port + "/" + cfgMongo.name;
 
 mongoose.connect(mongodb_uri);
 

@@ -75,7 +75,7 @@ module.exports = (grunt) ->
           MONGODB_PASS: ''
           MONGODB_SERVER: 'localhost'
           MONGODB_PORT: 27017
-          MONGODB_NAME: 'lazypark'
+          DEBUG: '*'
       dev:
         NODE_ENV: 'dev'
         MONGODB_NAME: 'lazypark-dev'
