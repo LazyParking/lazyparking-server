@@ -22,7 +22,7 @@ module.exports = (grunt) ->
     coffee:
       options:
         bare: true  # not needed for node.js
-        sourceMap: grunt.option('sourceMaps')
+        sourceMap: false
       sourceFiles:
         src: ['**/*.coffee']
         cwd: 'app.coffee/'
@@ -105,23 +105,21 @@ module.exports = (grunt) ->
     'coffee'
   ]
 
-  grunt.registerTask 'serve', [
-    'build'
-    'env:dev'
-    'concurrent:serve'
-  ]
-  
-  # Debug task.
-  grunt.registerTask 'debug', ->
-    if not grunt.option 'sourceMaps'
-      grunt.log.subhead 'You may want to use --sourceMaps option'
+  grunt.registerTask 'serve', (target) ->
+    if target is 'debug'
+      grunt.config.set 'coffee.options.sourceMap', true
+      grunt.task.run [
+        'build'
+        'env:dev'
+        'concurrent:debug'
+      ]
 
     grunt.task.run [
       'build'
       'env:dev'
-      'concurrent:debug'
+      'concurrent:serve'
     ]
-
+  
   # Lint task(s).
   grunt.registerTask 'lint', [
     'coffeelint'
