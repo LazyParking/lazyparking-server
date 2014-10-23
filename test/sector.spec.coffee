@@ -72,14 +72,6 @@ describe 'Sector', ->
         expect(sector.boxes).to.have.length(0)
         done()
 
-  it 'cannot add an inexistent box', (done) ->
-    Sector.find {_id: 0x22}, (err, data) ->
-      sector = data[0]
-      sector.boxes.push 0x99
-      sector.save (err) ->
-        expect(err).to.be.not.null
-        done()
-
   # add some boxes for the next tests
   before (done) ->
     Box.find().remove ->
