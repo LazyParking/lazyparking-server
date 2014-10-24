@@ -58,6 +58,8 @@ app.use("/", require("./routes/index"));
 
 app.use("/users", require("./routes/users"));
 
+app.use("/boxes", require("./routes/boxes"));
+
 app.use(function(req, res, next) {
   var err;
   err = new Error("Not Found");

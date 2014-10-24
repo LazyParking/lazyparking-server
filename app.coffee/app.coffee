@@ -39,6 +39,7 @@ Add for each route/*
 ###
 app.use "/", require("./routes/index")
 app.use "/users", require("./routes/users")
+app.use "/boxes", require("./routes/boxes")
 
 # catch 404 and forward to error handler
 app.use (req, res, next) ->
