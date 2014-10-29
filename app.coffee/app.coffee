@@ -17,7 +17,7 @@ mongodb_uri = "mongodb://#{cfgMongo.user}:#{cfgMongo.pass}\
 mongoose.connect mongodb_uri
 
 # Add test data to database
-if process.env.NODE_ENV == 'dev'
+if process.env.NODE_ENV == 'development'
   require('./config/seed')
 
 # view engine setup
@@ -41,6 +41,9 @@ app.use "/", require("./routes/index")
 app.use "/users", require("./routes/users")
 app.use "/boxes", require("./routes/boxes")
 
+# add environment to jade templates
+app.locals.env = app.get('env')
+
 # catch 404 and forward to error handler
 app.use (req, res, next) ->
   err = new Error("Not Found")
@@ -60,7 +63,6 @@ if app.get("env") is "development"
       error: err
     return
 
-
 # production error handler
 # no stacktraces leaked to user
 app.use (err, req, res, next) ->
@@ -69,5 +71,9 @@ app.use (err, req, res, next) ->
     message: err.message
     error: {}
   return
+
+# live reload
+if app.get("env") is "development"
+  app.use require('connect-livereload')()
 
 module.exports = app

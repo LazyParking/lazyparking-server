@@ -27,7 +27,7 @@ mongodb_uri = "mongodb://" + cfgMongo.user + ":" + cfgMongo.pass + "@" + cfgMong
 
 mongoose.connect(mongodb_uri);
 
-if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'development') {
   require('./config/seed');
 }
 
@@ -60,6 +60,8 @@ app.use("/users", require("./routes/users"));
 
 app.use("/boxes", require("./routes/boxes"));
 
+app.locals.env = app.get('env');
+
 app.use(function(req, res, next) {
   var err;
   err = new Error("Not Found");
@@ -84,5 +86,9 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+if (app.get("env") === "development") {
+  app.use(require('connect-livereload')());
+}
 
 module.exports = app;
