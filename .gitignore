@@ -27,3 +27,6 @@ app/public/lib/*
 
 # Coffeescript sourceMaps
 app/**/*.map
+
+# JetBrains IDEs
+.idea/
