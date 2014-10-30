@@ -13,7 +13,7 @@ module.exports = (grunt) ->
     # paths and other configs
     config:
       path:
-        src: 'app.coffee'
+        src: 'src'
         app: 'app'
         test: 'test'
       
