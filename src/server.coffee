@@ -1,7 +1,7 @@
 debug  = require('debug')('lazyparking-server')
 net    = require("net")
 
-Echo   = require("./services/echo")
+Drone   = require("./services/drone.service")
 
 module.exports =
   setPort: (@port) ->
@@ -11,11 +11,11 @@ module.exports =
 
   start: (callback) ->
     server = net.createServer (client) ->
-      console.log "server connected"
+      console.log "server connected", client.address()
       
       client.on "end", ->
         console.log "server disconnected"
 
-      new Echo(client)
+      new Drone(client)
 
     server.listen @port, callback

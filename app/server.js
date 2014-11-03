@@ -1,10 +1,10 @@
-var Echo, debug, net;
+var Drone, debug, net;
 
 debug = require('debug')('lazyparking-server');
 
 net = require("net");
 
-Echo = require("./services/echo");
+Drone = require("./services/drone.service");
 
 module.exports = {
   setPort: function(port) {
@@ -16,11 +16,11 @@ module.exports = {
   start: function(callback) {
     var server;
     server = net.createServer(function(client) {
-      console.log("server connected");
+      console.log("server connected", client.address());
       client.on("end", function() {
         return console.log("server disconnected");
       });
-      return new Echo(client);
+      return new Drone(client);
     });
     return server.listen(this.port, callback);
   }
