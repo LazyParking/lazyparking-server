@@ -3,8 +3,12 @@ html
   head
     title= title
     link(rel='stylesheet', href='/css/style.css')
+    link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap-theme.min.css')
+
   body
     block content
-    
+
+    script(src="/lib/jquery/dist/jquery.min.js")
     if env == 'development'
       script(src="http://localhost:35729/livereload.js?snipver=1")
