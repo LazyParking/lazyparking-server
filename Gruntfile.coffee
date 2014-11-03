@@ -31,6 +31,7 @@ module.exports = (grunt) ->
       mochaTest:
         files: ['<%= config.path.test %>/**/*.coffee']
         tasks: [
+          # 'build'
           'newer:coffeelint:tests'
           'mochaTest'
         ]
@@ -76,6 +77,7 @@ module.exports = (grunt) ->
         cwd: '<%= config.path.src %>/'
         dest: '<%= config.path.app %>/'
         ext: '.js'
+        extDot: 'last'
         expand: true
         flatten: false
 
@@ -150,7 +152,7 @@ module.exports = (grunt) ->
 
     # Tests
     mochaTest:
-      src: ['test/**/*.coffee']
+      src: ['test/**/*.spec.coffee']
       options:
         reporter: 'spec'
         require: ['coffee-script/register', 'bin/www']
@@ -174,7 +176,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'build', [
     'lint:sources'
-    'coffee'
+    'newer:coffee'
   ]
 
   grunt.registerTask 'serve', (target) ->
@@ -202,9 +204,10 @@ module.exports = (grunt) ->
   
   # Test task.
   grunt.registerTask 'test', [
+    # 'build'
     'env:test'
     'coffeelint:tests'
     'mochaTest'
-    'watch:mochaTest'
+    # 'watch:mochaTest'
   ]
   return
