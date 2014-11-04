@@ -16,9 +16,9 @@ module.exports = {
   start: function(callback) {
     var server;
     server = net.createServer(function(client) {
-      console.log("server connected", client.address());
+      debug("server connected", client.address());
       client.on("end", function() {
-        return console.log("server disconnected");
+        return debug("server disconnected");
       });
       return new Drone(client);
     });

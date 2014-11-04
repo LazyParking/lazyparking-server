@@ -11,10 +11,10 @@ module.exports =
 
   start: (callback) ->
     server = net.createServer (client) ->
-      console.log "server connected", client.address()
+      debug "server connected", client.address()
       
       client.on "end", ->
-        console.log "server disconnected"
+        debug "server disconnected"
 
       new Drone(client)
 
