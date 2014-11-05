@@ -2,6 +2,9 @@ expect   = require("chai").expect
 
 Box    = require("../app/models/box")
 
+# start the server
+require("../bin/www")
+
 describe 'Box', ->
   before (done) ->
     Box.find().remove ->
