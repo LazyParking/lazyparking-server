@@ -96,7 +96,7 @@ describe 'Drone', ->
         expect(b).to.have.deep.property 'drone.id', 123 for b in data
         done()
 
-  it.skip 'mark box 01 as occupied', (done) ->
+  it 'mark box 01 as occupied', (done) ->
     client.write JSON.stringify
       method: "s"
       droneId: 42
@@ -105,22 +105,22 @@ describe 'Drone', ->
     client.on 'data', (data) ->
       expect(data.toString()).to.contain.string 'Box 1 marked as occupied'
       Box.findOne {"_id": 1}, (err, data) ->
-        expect(data).to.have.property 'avaiable', 0
+        expect(data).to.have.property 'avaiable', false
         done()
 
-  it.skip 'mark box 02 as occupied', (done) ->
+  it 'mark box 02 as occupied', (done) ->
     client.write JSON.stringify
       method: "s"
       droneId: 123
       boxId: 2
-      avaiable: 0
+      avaiable: false
     client.on 'data', (data) ->
       expect(data.toString()).to.contain.string 'Box 2 marked as occupied'
       Box.findOne {"_id": 2}, (err, data) ->
-        expect(data).to.have.property 'avaiable', 0
+        expect(data).to.have.property 'avaiable', false
         done()
 
-  it.skip 'mark box 01 as avaiable', (done) ->
+  it 'mark box 01 as avaiable', (done) ->
     client.write JSON.stringify
       method: "s"
       droneId: 42
@@ -129,7 +129,19 @@ describe 'Drone', ->
     client.on 'data', (data) ->
       expect(data.toString()).to.contain.string 'Box 1 marked as avaiable'
       Box.findOne {"_id": 1}, (err, data) ->
-        expect(data).to.have.property 'avaiable', 1
+        expect(data).to.have.property 'avaiable', true
+        done()
+
+  it 'mark box 03 as avaiable', (done) ->
+    client.write JSON.stringify
+      method: "s"
+      droneId: 42
+      boxId: 3
+      avaiable: true
+    client.on 'data', (data) ->
+      expect(data.toString()).to.contain.string 'Box 3 marked as avaiable'
+      Box.findOne {"_id": 3}, (err, data) ->
+        expect(data).to.have.property 'avaiable', true
         done()
 
   it 'removes box 02 from drone 123'

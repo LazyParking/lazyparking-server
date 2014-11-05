@@ -36,7 +36,7 @@ class Drone
               @register boxId, jsonData.droneId
 
         when DroneMethods.STATUS
-          @setAvaiable jsonData
+          @setAvaiable jsonData.boxId, jsonData.avaiable
 
   # Registra um box na base de dados
   register: (boxId, droneId) ->
@@ -67,7 +67,22 @@ class Drone
           @respondWith "Box #{boxId} registered for Drone #{droneId}"
 
   # Marca um box como livre ou ocupado
-  setAvaiable: (data) ->
+  setAvaiable: (boxId, avaiable = 0) ->
+    Box.findOne {_id: boxId}, (err, box) =>
+      return @handleError(err) if err?
+      # se encontrou, atualiza o estado
+      if box?
+        box.avaiable = avaiable
+        box.save (err) =>
+          return @handleError(err) if err?
+          @respondWith "Box #{boxId} marked as #{
+            if avaiable in [1, true]
+              'avaiable'
+            else
+              'occupied'
+          }"
+      else
+        @respondWith "Box #{boxId} not found"
 
   # Valida se os dados enviados são corretos
   validate: (data) ->
@@ -95,7 +110,7 @@ class Drone
           @respondWith "Box id not defined. #{JSON.stringify data}"
           return false
 
-        if data.avaible not in [0, 1]
+        if data.avaiable not in [0, 1, false, true]
           @respondWith "Invalid value for avaiable. #{JSON.stringify data}"
           return false
 

@@ -41,7 +41,7 @@ Drone = (function() {
             }
             break;
           case DroneMethods.STATUS:
-            return _this.setAvaiable(jsonData);
+            return _this.setAvaiable(jsonData.boxId, jsonData.avaiable);
         }
       };
     })(this));
@@ -88,7 +88,31 @@ Drone = (function() {
     })(this));
   };
 
-  Drone.prototype.setAvaiable = function(data) {};
+  Drone.prototype.setAvaiable = function(boxId, avaiable) {
+    if (avaiable == null) {
+      avaiable = 0;
+    }
+    return Box.findOne({
+      _id: boxId
+    }, (function(_this) {
+      return function(err, box) {
+        if (err != null) {
+          return _this.handleError(err);
+        }
+        if (box != null) {
+          box.avaiable = avaiable;
+          return box.save(function(err) {
+            if (err != null) {
+              return _this.handleError(err);
+            }
+            return _this.respondWith("Box " + boxId + " marked as " + (avaiable === 1 || avaiable === true ? 'avaiable' : 'occupied'));
+          });
+        } else {
+          return _this.respondWith("Box " + boxId + " not found");
+        }
+      };
+    })(this));
+  };
 
   Drone.prototype.validate = function(data) {
     var b, _i, _len, _ref, _ref1;
@@ -120,7 +144,7 @@ Drone = (function() {
           this.respondWith("Box id not defined. " + (JSON.stringify(data)));
           return false;
         }
-        if ((_ref1 = data.avaible) !== 0 && _ref1 !== 1) {
+        if ((_ref1 = data.avaiable) !== 0 && _ref1 !== 1 && _ref1 !== false && _ref1 !== true) {
           this.respondWith("Invalid value for avaiable. " + (JSON.stringify(data)));
           return false;
         }
