@@ -13,9 +13,15 @@ BoxSchema = new Schema({
     type: Boolean,
     "default": false
   },
-  droneId: {
-    type: Number,
-    required: true
+  drone: {
+    id: {
+      type: Number,
+      required: true
+    },
+    address: {
+      type: String,
+      required: true
+    }
   },
   created: {
     type: Date,
