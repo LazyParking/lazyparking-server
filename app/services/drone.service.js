@@ -7,47 +7,45 @@ Box = require("../models/box");
 _ = require("lodash");
 
 Drone = (function() {
-  var _client;
+  var _client, _respondOnce, _response;
 
   _client = null;
 
-  function Drone(client) {
-    var stringData;
-    _client = client;
-    stringData = '';
-    _client.on('data', function(data) {
-      if (data == null) {
-        return true;
-      }
-      stringData += data.toString();
-      return this.process(stringData);
-    });
-  }
+  _response = '';
 
-  Drone.prototype.process = _.debounce(function(stringData) {
-    var boxId, data, _i, _len, _ref, _results;
-    data = JSON.parse(stringData);
-    if (this.validate(data) === false) {
-      return false;
-    }
-    switch (data.method) {
-      case DroneMethods.REGISTER:
-        if (data.boxes.length === 0) {
-          return this.respondWith("Drone " + data.droneId + " has no boxes");
-        } else {
-          _ref = data.boxes;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            boxId = _ref[_i];
-            _results.push(this.register(boxId, data.droneId));
-          }
-          return _results;
+  function Drone(client) {
+    _client = client;
+    this.respondWith("Hello!");
+    _client.on('data', (function(_this) {
+      return function(data) {
+        var boxId, jsonData, _i, _len, _ref, _results;
+        if (data == null) {
+          return true;
         }
-        break;
-      case DroneMethods.STATUS:
-        return this.setAvaiable(data);
-    }
-  }, 500);
+        jsonData = JSON.parse(data.toString());
+        if (_this.validate(jsonData) === false) {
+          return false;
+        }
+        switch (jsonData.method) {
+          case DroneMethods.REGISTER:
+            if (jsonData.boxes.length === 0) {
+              return _this.respondWith("Drone " + jsonData.droneId + " has no boxes");
+            } else {
+              _ref = jsonData.boxes;
+              _results = [];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                boxId = _ref[_i];
+                _results.push(_this.register(boxId, jsonData.droneId));
+              }
+              return _results;
+            }
+            break;
+          case DroneMethods.STATUS:
+            return _this.setAvaiable(jsonData);
+        }
+      };
+    })(this));
+  }
 
   Drone.prototype.register = function(boxId, droneId) {
     return Box.findOne({
@@ -143,14 +141,15 @@ Drone = (function() {
     return true;
   };
 
-  Drone.prototype.respondWith = function(message, end) {
-    if (end == null) {
-      end = true;
-    }
-    _client.write("" + message + "\n");
-    if (end === true) {
-      return _client.end();
-    }
+  _respondOnce = _.debounce(function(message, callback) {
+    return _client.write(_response, callback);
+  }, 500);
+
+  Drone.prototype.respondWith = function(message) {
+    _response += "" + message + "\n";
+    return _respondOnce(_response, function() {
+      return _response = '';
+    });
   };
 
   return Drone;

@@ -8,39 +8,35 @@ class Drone
   # @private
   _client = null
 
+  # resposta a ser enviada para cliente
+  # @private
+  _response = ''
+
   # O contrutor adiciona referencia local para o cliente
   # e executa o método solicitado
   constructor: (client) ->
     _client = client
 
     # envia um "alô"
-    # @respondWith "Hello!"
-
-    stringData = ''
+    @respondWith "Hello!"
 
     # evento 'data', executa o @process
-    _client.on 'data', (data) ->
+    _client.on 'data', (data) =>
       return true if not data?
-      stringData += data.toString()
-      @process stringData
-        
-  # Processa os dados recebidos após XXXms
-  process: _.debounce (stringData) ->
-    data = JSON.parse stringData
-    return false if @validate(data) is false
+      jsonData = JSON.parse data.toString()
+      return false if @validate(jsonData) is false
 
-    switch data.method
-      when DroneMethods.REGISTER
-        if data.boxes.length is 0
-          @respondWith "Drone #{data.droneId} has no boxes"
+      switch jsonData.method
+        when DroneMethods.REGISTER
+          if jsonData.boxes.length is 0
+            @respondWith "Drone #{jsonData.droneId} has no boxes"
 
-        else
-          for boxId in data.boxes
-            @register boxId, data.droneId
+          else
+            for boxId in jsonData.boxes
+              @register boxId, jsonData.droneId
 
-      when DroneMethods.STATUS
-        @setAvaiable data
-  , 500 # TODO: usar uma config
+        when DroneMethods.STATUS
+          @setAvaiable jsonData
 
   # Registra um box na base de dados
   register: (boxId, droneId) ->
@@ -117,12 +113,17 @@ class Drone
       return false
     return true
 
+  # @private
+  _respondOnce = _.debounce (message, callback) ->
+    _client.write _response, callback
+  , 500 # TODO: usar uma config ou ENV
+
   # Envia uma mensagem para o Drone
-  # e fecha a conexão
-  # @param {boolean} end fechar a conexão? (padrão: true)
-  respondWith: (message, end = true) ->
-    _client.write "#{message}\n"
-    _client.end() if end is true
+  # @param {string} message
+  respondWith: (message) ->
+    _response += "#{message}\n"
+    _respondOnce _response, ->
+      _response = ''
 
 # exporta a classe
 module.exports = Drone
