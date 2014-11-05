@@ -18,10 +18,17 @@ The Server scripts for Lazy Park
 
         npm start
 
-## Testing the echo serve
+## Ports and services
 
-Until now, the only thing that the server does is to echo every message received.
+### Express
 
-You can try it with any application that can connect to a Socks Server. Even with telnet.
+By default, the express server run on port `3000`. 
 
-    telnet localhost 3030
+You can acess http://localhost:3000 to reach the webpages.
+
+### Drone/TCP
+
+The _Drone_ communication service runs on port `3030`.
+
+You can test it by connecting with `telnet localhost 3030` and 
+sending some `JSON` data.
