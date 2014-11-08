@@ -1,6 +1,6 @@
 {
   "name": "lazyparking-server",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "The Server scripts for Lazy Park",
   "private": true,
   "repository": {
@@ -14,10 +14,11 @@
   },
   "scripts": {
     "start": "node ./bin/www",
-    "test": "grunt test"
+    "test": "node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register --reporter spec"
   },
   "devDependencies": {
     "chai": "^1.9.1",
+    "coffee-script": "^1.8.0",
     "coffeelint": "^1.5.6",
     "connect-livereload": "^0.5.0",
     "grunt": "^0.4.5",
@@ -34,6 +35,7 @@
     "grunt-open": "^0.2.3",
     "jit-grunt": "^0.9.0",
     "load-grunt-tasks": "^0.6.0",
+    "mocha": "^2.0.1",
     "open": "0.0.5",
     "time-grunt": "^1.0.0"
   },
