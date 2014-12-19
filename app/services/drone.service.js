@@ -1,10 +1,12 @@
-var Box, Drone, DroneMethods, _;
+var Box, Drone, DroneMethods, debug, _;
+
+debug = require('debug')('lazyparking-server');
+
+_ = require("lodash");
 
 DroneMethods = require("../models/droneMethods");
 
 Box = require("../models/box");
-
-_ = require("lodash");
 
 Drone = (function() {
   var _client, _respondOnce, _response;
@@ -22,6 +24,7 @@ Drone = (function() {
         if (data == null) {
           return true;
         }
+        debug("Server received: " + (data.toString()));
         jsonData = JSON.parse(data.toString());
         if (_this.validate(jsonData) === false) {
           return false;
@@ -166,6 +169,7 @@ Drone = (function() {
   };
 
   _respondOnce = _.debounce(function(message, callback) {
+    debug("Server responded: " + message);
     return _client.write(_response, callback);
   }, 500);
 

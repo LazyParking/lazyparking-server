@@ -1,6 +1,8 @@
+debug        = require('debug')('lazyparking-server')
+_            = require("lodash")
+
 DroneMethods = require("../models/droneMethods")
 Box          = require("../models/box")
-_            = require("lodash")
 
 # Recebe as informações do Drone
 class Drone
@@ -23,6 +25,7 @@ class Drone
     # evento 'data', executa o @process
     _client.on 'data', (data) =>
       return true if not data?
+      debug "Server received: #{data.toString()}"
       jsonData = JSON.parse data.toString()
       return false if @validate(jsonData) is false
 
@@ -130,6 +133,7 @@ class Drone
 
   # @private
   _respondOnce = _.debounce (message, callback) ->
+    debug "Server responded: #{message}"
     _client.write _response, callback
   , 500 # TODO: usar uma config ou ENV
 
