@@ -1,10 +1,14 @@
-var Box, Drone, DroneMethods, _;
+var Box, Drone, DroneMethods, debug, error, _;
+
+debug = require('debug')('lazyparking-server');
+
+error = require('debug')('lazyparking-server:error');
+
+_ = require("lodash");
 
 DroneMethods = require("../models/droneMethods");
 
 Box = require("../models/box");
-
-_ = require("lodash");
 
 Drone = (function() {
   var _client, _respondOnce, _response;
@@ -18,11 +22,19 @@ Drone = (function() {
     this.respondWith("Hello!");
     _client.on('data', (function(_this) {
       return function(data) {
-        var boxId, jsonData, _i, _len, _ref, _results;
+        var boxId, e, jsonData, _i, _len, _ref, _results;
         if (data == null) {
           return true;
         }
-        jsonData = JSON.parse(data.toString());
+        debug("Server received: " + (data.toString()));
+        try {
+          jsonData = JSON.parse(data.toString());
+        } catch (_error) {
+          e = _error;
+          _this.respondWith("Invalid data received");
+          _this.handleError(e);
+          return false;
+        }
         if (_this.validate(jsonData) === false) {
           return false;
         }
@@ -159,13 +171,15 @@ Drone = (function() {
   Drone.prototype.handleError = function(err) {
     if (err != null) {
       this.respondWith(err.message);
-      console.error(err.message, err.stack);
+      debug(err.message);
+      error(err.stack);
       return false;
     }
     return true;
   };
 
   _respondOnce = _.debounce(function(message, callback) {
+    debug("Server responded: " + message);
     return _client.write(_response, callback);
   }, 500);
 
