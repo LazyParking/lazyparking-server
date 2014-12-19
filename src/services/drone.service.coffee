@@ -1,4 +1,5 @@
 debug        = require('debug')('lazyparking-server')
+error        = require('debug')('lazyparking-server:error')
 _            = require("lodash")
 
 DroneMethods = require("../models/droneMethods")
@@ -26,7 +27,12 @@ class Drone
     _client.on 'data', (data) =>
       return true if not data?
       debug "Server received: #{data.toString()}"
-      jsonData = JSON.parse data.toString()
+      try
+        jsonData = JSON.parse data.toString()
+      catch e
+        @respondWith "Invalid data received"
+        @handleError e
+        return false
       return false if @validate(jsonData) is false
 
       switch jsonData.method
@@ -126,8 +132,9 @@ class Drone
   # Trata dos erros ocorridos
   handleError: (err) ->
     if err?
-      @respondWith err.message
-      console.error err.message, err.stack
+      # @respondWith err.message
+      debug "Error: #{err.message}"
+      error "Stack: #{err.stack}"
       return false
     return true
 
