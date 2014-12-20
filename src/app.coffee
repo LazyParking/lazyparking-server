@@ -12,8 +12,8 @@ app          = express()
 ###
 Connect to mongodb
 ###
-mongodb_uri = "mongodb://#{cfgMongo.user}:#{cfgMongo.pass}\
-  @#{cfgMongo.server}:#{cfgMongo.port}/#{cfgMongo.name}"
+mongodb_uri = "mongodb://#{cfgMongo.user}:#{cfgMongo.pass}" +
+  "@#{cfgMongo.server}:#{cfgMongo.port}/#{cfgMongo.name}"
 mongoose.connect mongodb_uri
 
 # Add test data to database
