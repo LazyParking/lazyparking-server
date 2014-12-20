@@ -14,7 +14,10 @@ Box.find().remove(function() {
     _results.push(Box.create({
       _id: id,
       avaiable: true,
-      droneId: 0x1
+      drone: {
+        id: 0x1,
+        address: '127.0.0.1'
+      }
     }, function(err) {
       if (err) {
         console.error(err);

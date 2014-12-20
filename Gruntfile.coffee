@@ -22,18 +22,11 @@ module.exports = (grunt) ->
       sourceFiles:
         files: ['<%= config.path.src %>/**/*.coffee']
         tasks: [
-          'newer:coffeelint'
+          'newer:coffeelint:sources'
           'newer:coffee'
         ]
         options:
           livereload: true
-
-      mochaTest:
-        files: ['<%= config.path.test %>/**/*.coffee']
-        tasks: [
-          'newer:coffeelint:tests'
-          'mochaTest'
-        ]
 
       livereload:
         files: [
@@ -76,6 +69,7 @@ module.exports = (grunt) ->
         cwd: '<%= config.path.src %>/'
         dest: '<%= config.path.app %>/'
         ext: '.js'
+        extDot: 'last'
         expand: true
         flatten: false
 
@@ -121,14 +115,13 @@ module.exports = (grunt) ->
 
     # Run some tasks in paralel
     concurrent:
+      options:
+        logConcurrentOutput: true
       debug:
         tasks: [
           'nodemon'
           'node-inspector'
         ]
-        options:
-          limit: 3
-          logConcurrentOutput: true
 
     # Set environment variables
     env:
@@ -150,10 +143,11 @@ module.exports = (grunt) ->
 
     # Tests
     mochaTest:
-      src: ['test/**/*.coffee']
-      options:
-        reporter: 'spec'
-        require: ['coffee-script/register', 'bin/www']
+      test:
+        src: ['test/**/*.spec.coffee']
+        options:
+          reporter: 'spec'
+          require: ['coffee-script/register']
 
   # Making grunt default to force in order not to break the project.
   # grunt.option 'force', true
@@ -172,10 +166,13 @@ module.exports = (grunt) ->
     'build'
   ]
 
-  grunt.registerTask 'build', [
-    'lint:sources'
-    'coffee'
-  ]
+  grunt.registerTask 'build', (target) ->
+    grunt.task.run [
+      'coffeelint:sources'
+      'coffee'
+    ]
+    if target is 'watch'
+      grunt.task.run ['watch:sourceFiles']
 
   grunt.registerTask 'serve', (target) ->
     if target is 'debug'
@@ -205,6 +202,5 @@ module.exports = (grunt) ->
     'env:test'
     'coffeelint:tests'
     'mochaTest'
-    'watch:mochaTest'
   ]
   return
