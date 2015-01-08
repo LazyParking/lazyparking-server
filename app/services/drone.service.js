@@ -170,9 +170,8 @@ Drone = (function() {
 
   Drone.prototype.handleError = function(err) {
     if (err != null) {
-      this.respondWith(err.message);
-      debug(err.message);
-      error(err.stack);
+      debug("Error: " + err.message);
+      error("Stack: " + err.stack);
       return false;
     }
     return true;

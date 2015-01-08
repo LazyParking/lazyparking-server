@@ -12,7 +12,8 @@ router.get("/", function(req, res) {
       console.log(err);
     }
     return res.render('box/list', {
-      boxes: data
+      boxes: data,
+      title: "Lazy Parking"
     });
   });
 });
