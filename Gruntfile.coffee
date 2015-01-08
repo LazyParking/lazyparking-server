@@ -18,10 +18,24 @@ module.exports = (grunt) ->
       
     # Watch for files changing
     watch:
-      sourceFiles:
-        files: ['<%= config.path.app %>/**/*.coffee']
+      coffeescript:
+        files: [
+          '<%= config.path.app %>/**/*.coffee'
+          '<%= config.path.app %>/public/coffee/**/*.coffee'
+        ]
         tasks: [
           'newer:coffeelint:sources'
+        ]
+        options:
+          livereload: true
+      javascript:
+        files: [
+          'bin/www'
+          '<%= config.path.app %>/**/*.js'
+          '<%= config.path.app %>/public/js/**/*.js'
+        ]
+        tasks: [
+          'newer:jshint:sources'
         ]
         options:
           livereload: true
@@ -50,12 +64,25 @@ module.exports = (grunt) ->
           livereload: true
           nospawn: true #Without this option specified express won't be reloaded
 
-    # check source syntax
+    # check coffeescript syntax
     coffeelint:
-      sources: ['<%= config.path.app %>/**/*.coffee']
+      sources: [
+        '<%= config.path.app %>/**/*.coffee'
+        '<%= config.path.app %>/public/coffee/**/*.coffee'
+      ]
       tests: ['<%= config.path.test %>/**/*.coffee']
       options:
         configFile: 'coffeelint.json'
+
+    # check javascript syntax
+    jshint:
+      sources: [
+        'bin/www'
+        '<%= config.path.app %>/**/*.js'
+        '<%= config.path.app %>/public/js/**/*.js'
+      ]
+      options:
+        jshintrc: '.jshintrc'
 
     # Run the express server
     express:
@@ -158,6 +185,7 @@ module.exports = (grunt) ->
       ]
 
     grunt.task.run [
+      "lint"
       "env:dev"
       "express:dev"
       "wait"
@@ -168,6 +196,7 @@ module.exports = (grunt) ->
   # Lint task(s).
   grunt.registerTask 'lint', [
     'coffeelint'
+    'jshint'
   ]
   
   # Test task.
