@@ -13,17 +13,15 @@ module.exports = (grunt) ->
     # paths and other configs
     config:
       path:
-        src: 'src'
         app: 'app'
         test: 'test'
       
     # Watch for files changing
     watch:
       sourceFiles:
-        files: ['<%= config.path.src %>/**/*.coffee']
+        files: ['<%= config.path.app %>/**/*.coffee']
         tasks: [
           'newer:coffeelint:sources'
-          'newer:coffee'
         ]
         options:
           livereload: true
@@ -41,8 +39,8 @@ module.exports = (grunt) ->
 
       express:
         files: [
-          "<%= config.path.app %>/**/*.{js,json}"
-          "!<%= config.path.app %>/public/{js,lib}/**/*.js"
+          "<%= config.path.app %>/**/*.{coffee,js,json}"
+          "!<%= config.path.app %>/public/{coffee,js,lib}/**/*.{coffee,js}"
         ]
         tasks: [
           "express:dev"
@@ -54,24 +52,10 @@ module.exports = (grunt) ->
 
     # check source syntax
     coffeelint:
-      sources: ['<%= config.path.src %>/**/*.coffee']
+      sources: ['<%= config.path.app %>/**/*.coffee']
       tests: ['<%= config.path.test %>/**/*.coffee']
       options:
         configFile: 'coffeelint.json'
-
-    # Compile sources
-    coffee:
-      options:
-        bare: true  # not needed for node.js
-        sourceMap: false
-      sourceFiles:
-        src: ['**/*.coffee']
-        cwd: '<%= config.path.src %>/'
-        dest: '<%= config.path.app %>/'
-        ext: '.js'
-        extDot: 'last'
-        expand: true
-        flatten: false
 
     # Run the express server
     express:
@@ -163,28 +147,17 @@ module.exports = (grunt) ->
 
   # Default task(s).
   grunt.registerTask 'default', [
-    'build'
+    'serve'
   ]
-
-  grunt.registerTask 'build', (target) ->
-    grunt.task.run [
-      'coffeelint:sources'
-      'coffee'
-    ]
-    if target is 'watch'
-      grunt.task.run ['watch:sourceFiles']
 
   grunt.registerTask 'serve', (target) ->
     if target is 'debug'
-      grunt.config.set 'coffee.options.sourceMap', true
       grunt.task.run [
-        "build"
         "env:dev"
         "concurrent:debug"
       ]
 
     grunt.task.run [
-      "build"
       "env:dev"
       "express:dev"
       "wait"
