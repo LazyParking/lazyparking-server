@@ -21,7 +21,7 @@ module.exports = (grunt) ->
       coffeescript:
         files: [
           '<%= config.path.app %>/**/*.coffee'
-          '<%= config.path.app %>/public/coffee/**/*.coffee'
+          '!<%= config.path.app %>/public/lib/**/*.coffee'
         ]
         tasks: [
           'newer:coffeelint:sources'
@@ -32,7 +32,7 @@ module.exports = (grunt) ->
         files: [
           'bin/www'
           '<%= config.path.app %>/**/*.js'
-          '<%= config.path.app %>/public/js/**/*.js'
+          '!<%= config.path.app %>/public/lib/**/*.js'
         ]
         tasks: [
           'newer:jshint:sources'
@@ -68,7 +68,7 @@ module.exports = (grunt) ->
     coffeelint:
       sources: [
         '<%= config.path.app %>/**/*.coffee'
-        '<%= config.path.app %>/public/coffee/**/*.coffee'
+        '!<%= config.path.app %>/public/lib/**/*.coffee'
       ]
       tests: ['<%= config.path.test %>/**/*.coffee']
       options:
@@ -79,7 +79,7 @@ module.exports = (grunt) ->
       sources: [
         'bin/www'
         '<%= config.path.app %>/**/*.js'
-        '<%= config.path.app %>/public/js/**/*.js'
+        '!<%= config.path.app %>/public/lib/**/*.js'
       ]
       options:
         jshintrc: '.jshintrc'
