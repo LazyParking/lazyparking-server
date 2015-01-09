@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "0.10"
+services:
+  - mongodb
+env:
+  global:
+    - HTTP_PORT="3000"
+    - SERV_PORT="3030"
+    - MONGODB_USER=""
+    - MONGODB_PASS=""
+    - MONGODB_SERVER="127.0.0.1"
+    - MONGODB_PORT=27017
+    - NODE_ENV="test"
+    - MONGODB_NAME="lazypark-test"
