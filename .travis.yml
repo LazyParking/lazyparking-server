@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "0.10"
+  - "0.8"
+services:
+  - mongodb
+env:
+  - HTTP_PORT="3000"
+  - SERV_PORT="3030"
+  - MONGODB_USER=""
+  - MONGODB_PASS=""
+  - MONGODB_SERVER="127.0.0.1"
+  - MONGODB_PORT=27017
