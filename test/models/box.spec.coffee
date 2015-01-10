@@ -1,9 +1,9 @@
 expect   = require("chai").expect
 
-Box    = require("../app/models/box")
+Box    = require("../../app/models/box")
 
 # start the server
-require("../bin/www")
+require("../../bin/www")
 
 describe 'Box', ->
   before (done) ->

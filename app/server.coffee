@@ -11,7 +11,7 @@ module.exports =
 
   start: (callback) ->
     server = net.createServer (client) ->
-      debug "server connected", client.address()
+      debug "server connected", client.remoteAddress
       
       client.on "end", ->
         debug "server disconnected"
