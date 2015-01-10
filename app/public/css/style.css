@@ -1,9 +1,18 @@
 body {
   padding-top: 70px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  /* min-height: 2000px; */
 }
 
 a {
   color: #00B7FF;
+}
+
+.vagas-setores{
+  height: 40px;
+  width: 40px;
+  background-color: #009900;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 10px;
 }
