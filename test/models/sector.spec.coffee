@@ -1,10 +1,10 @@
 expect   = require("chai").expect
 
-Sector = require("../app/models/sector")
-Box    = require("../app/models/box")
+Sector = require("../../app/models/sector")
+Box    = require("../../app/models/box")
 
 # start the server
-require("../bin/www")
+require("../../bin/www")
 
 describe 'Sector', ->
   before (done) ->

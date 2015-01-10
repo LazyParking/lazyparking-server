@@ -2,11 +2,11 @@ expect = require("chai").expect
 net    = require("net")
 spawn  = require("child_process").spawn
 
-Sector = require("../app/models/sector")
-Box    = require("../app/models/box")
+Sector = require("../../app/models/sector")
+Box    = require("../../app/models/box")
 
 # start the server
-require("../bin/www")
+require("../../bin/www")
 
 describe 'Drone', ->
   client     = null
