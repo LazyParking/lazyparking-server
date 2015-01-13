@@ -3,7 +3,7 @@ router = express.Router()
 
 # GET home page.
 router.get "/", (req, res) ->
-  res.render 'contact',
+  res.render 'pages/contact',
     title: "Lazy Parking",
     pageName: 'contact'
 
