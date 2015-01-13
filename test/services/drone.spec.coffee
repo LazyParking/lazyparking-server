@@ -9,7 +9,7 @@ Box    = require("../../app/models/box")
 require("../../bin/www")
 
 describe 'Drone', ->
-  client     = null
+  client       = null
   responseData = null
 
   before 'remove all boxes', (done) ->
@@ -18,11 +18,6 @@ describe 'Drone', ->
   beforeEach 'start the net client', (done) ->
     responseData = ''
     client = net.connect {port: process.env.SERV_PORT or 3030}, ->
-      done()
-
-  it 'handshakes', (done) ->
-    client.on 'data', (data) ->
-      expect(data.toString()).to.contain.string 'Hello!'
       done()
 
   it 'try to register a new drone (666) without boxes', (done) ->
