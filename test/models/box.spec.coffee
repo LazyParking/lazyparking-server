@@ -22,26 +22,25 @@ describe 'Box', ->
 
   it 'add some boxes', (done) ->
     Box.create
-      _id: 0x11
-      drone:
-        id: 0x31
-        address: '0.0.0.0'
+      id: 0x11
+      droneId: 0x31
+      droneAddress: '0.0.0.0'
     ,
-      _id: 0x12
-      drone:
-        id: 0x31
-        address: '0.0.0.0'
+      id: 0x12
+      droneId: 0x31
+      droneAddress: '0.0.0.0'
     ,
-      _id: 0x13
-      drone:
-        id: 0x32
-        address: '0.0.0.0'
+      id: 0x13
+      droneId: 0x32
+      droneAddress: '0.0.0.0'
     , (err) ->
+      console.error err.message if err
       expect(err).to.be.null
       done()
 
   it 'find boxes wherever they are', (done) ->
     Box.find (err, data) ->
+      console.error err.message if err
       expect(err).to.be.null
       expect(data).to.be.an 'array'
       expect(data).to.be.not.empty
