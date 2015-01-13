@@ -20,9 +20,6 @@ class Drone
   constructor: (client) ->
     _client = client
 
-    # envia um "alô"
-    @respondWith "Hello!"
-
     # evento 'data', executa o @process
     _client.on 'data', (data) =>
       return true if not data?
@@ -141,14 +138,18 @@ class Drone
   # @private
   _respondOnce = _.debounce (message, callback) ->
     debug "Server responded: #{message}"
-    _client.write _response, callback
-  , 500 # TODO: usar uma config ou ENV
+    try
+      _client.write _response, callback
+    catch e
+      callback e
+  , 100 # TODO: usar uma config ou ENV
 
   # Envia uma mensagem para o Drone
   # @param {string} message
   respondWith: (message) ->
     _response += "#{message}\n"
-    _respondOnce _response, ->
+    _respondOnce _response, (err) =>
+      return @handleError err if err?
       _response = ''
 
 # exporta a classe
