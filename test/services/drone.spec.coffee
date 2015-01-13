@@ -144,7 +144,5 @@ describe 'Drone', ->
         expect(data).to.have.property 'avaiable', true
         done()
 
-  it 'removes box 02 from drone 123'
-
   afterEach 'end the net client', ->
     client.end()
