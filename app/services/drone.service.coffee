@@ -36,22 +36,20 @@ class Drone
 
   # Registra um box na base de dados
   register: (data) ->
-    Box.findOne {_id: boxId}, (err, box) =>
+    Box.create
+      id: data.boxId
+      droneId: data.droneId
+      droneAddress: _client.remoteAddress
+      occupied: data.occupied
+    , (err) =>
       return @handleError(err) if err?
-      Box.create
-        id: data.boxId
-        droneId: data.droneId
-        droneAddress: _client.remoteAddress
-        occupied: data.occupied
-      , (err) =>
-        return @handleError(err) if err?
-        @respondWith "Box #{data.boxId} registered for Drone #{data.droneId}"
-        @respondWith "Box #{data.boxId} marked as #{
-          if occupied in [1, true]
-            'occupied'
-          else
-            'avaiable'
-        }"
+      @respondWith "Box #{data.boxId} registered for Drone #{data.droneId}"
+      @respondWith "Box #{data.boxId} marked as #{
+        if data.occupied in [1, true]
+          'occupied'
+        else
+          'available'
+      }"
 
   # Marca um box como livre ou ocupado
   setAvaiable: (data) ->
@@ -63,10 +61,10 @@ class Drone
         box.save (err) =>
           return @handleError(err) if err?
           @respondWith "Box #{data.boxId} marked as #{
-            if occupied in [1, true]
+            if data.occupied in [1, true]
               'occupied'
             else
-              'avaiable'
+              'available'
           }"
       else
         # box not found, register

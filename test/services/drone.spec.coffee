@@ -28,7 +28,7 @@ describe 'Drone', ->
     client.on 'data', (data) ->
       expect(data.toString()).to.contain.string 'Box 1 registered for Drone 42'
       expect(data.toString()).to.contain.string 'Box 1 marked as occupied'
-      Box.findOne {"_id": 1}, (err, data) ->
+      Box.findOne {id: 1, droneId: 42}, (err, data) ->
         expect(data).to.have.property 'occupied', true
         done()
 
@@ -40,7 +40,7 @@ describe 'Drone', ->
     client.on 'data', (data) ->
       expect(data.toString()).to.contain.string 'Box 2 registered for Drone 123'
       expect(data.toString()).to.contain.string 'Box 2 marked as available'
-      Box.findOne {"_id": 2}, (err, data) ->
+      Box.findOne {id: 2, droneId: 123}, (err, data) ->
         expect(data).to.have.property 'occupied', false
         done()
 
@@ -51,7 +51,7 @@ describe 'Drone', ->
       occupied: false
     client.on 'data', (data) ->
       expect(data.toString()).to.contain.string 'Box 1 marked as available'
-      Box.findOne {"_id": 1}, (err, data) ->
+      Box.findOne {id: 1, droneId: 42}, (err, data) ->
         expect(data).to.have.property 'occupied', false
         done()
 
@@ -62,7 +62,7 @@ describe 'Drone', ->
       occupied: true
     client.on 'data', (data) ->
       expect(data.toString()).to.contain.string 'Box 2 marked as occupied'
-      Box.findOne {"_id": 3}, (err, data) ->
+      Box.findOne {id: 2, droneId: 123}, (err, data) ->
         expect(data).to.have.property 'occupied', true
         done()
 
