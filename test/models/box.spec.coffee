@@ -45,6 +45,15 @@ describe 'Box', ->
       expect(data).to.be.not.empty
       done()
 
+  it 'fails to add a box with same id and sectorId', (done) ->
+    Box.create
+      id: 0x11
+      droneId: 0x31
+      droneAddress: '0.0.0.0'
+    , (err) ->
+      expect(err).to.be.not.null
+      done()
+
   it 'find a box by id: 0x11'
 
   it 'deletes a box'
