@@ -44,12 +44,8 @@ class Drone
     , (err) =>
       return @handleError(err) if err?
       @respondWith "Box #{data.boxId} registered for Drone #{data.droneId}"
-      @respondWith "Box #{data.boxId} marked as #{
-        if data.occupied in [1, true]
-          'occupied'
-        else
-          'available'
-      }"
+      @respondWith "Box #{data.boxId} marked as
+        #{ ['available', 'occupied'][+data.occupied] }"
 
   # Marca um box como livre ou ocupado
   setAvaiable: (data) ->
@@ -60,12 +56,8 @@ class Drone
         box.occupied = data.occupied
         box.save (err) =>
           return @handleError(err) if err?
-          @respondWith "Box #{data.boxId} marked as #{
-            if data.occupied in [1, true]
-              'occupied'
-            else
-              'available'
-          }"
+          @respondWith "Box #{data.boxId} marked as
+            #{ ['available', 'occupied'][+data.occupied] }"
       else
         # box not found, register
         @register data
