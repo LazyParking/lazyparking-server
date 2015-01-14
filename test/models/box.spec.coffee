@@ -7,8 +7,7 @@ require("../../bin/www")
 
 describe 'Box', ->
   before (done) ->
-    Box.find().remove ->
-      done()
+    Box.find().remove done
 
   it 'is a Box', ->
     expect(Box).to.be.a 'function'
