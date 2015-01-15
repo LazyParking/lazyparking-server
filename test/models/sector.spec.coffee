@@ -8,8 +8,7 @@ require("../../bin/www")
 
 describe 'Sector', ->
   before (done) ->
-    Sector.find().remove ->
-      done()
+    Sector.find().remove done
 
   it 'is a sector', ->
     expect(Sector).to.be.a 'function'
@@ -79,48 +78,40 @@ describe 'Sector', ->
   before (done) ->
     Box.find().remove ->
       Box.create
-        _id: 0x11
-        drone:
-          id: 0x31,
-          address: '0.0.0.0'
+        id: 0x11
+        droneId: 0x31,
+        droneAddress: '0.0.0.0'
       ,
-        _id: 0x12
-        drone:
-          id: 0x31,
-          address: '0.0.0.0'
+        id: 0x12
+        droneId: 0x31,
+        droneAddress: '0.0.0.0'
       ,
-        _id: 0x13
-        drone:
-          id: 0x32,
-          address: '0.0.0.0'
-      , (err) ->
-        expect(err).to.be.null
-        done()
+        id: 0x13
+        droneId: 0x32,
+        droneAddress: '0.0.0.0'
+      , done
 
   it 'add three boxes to 0x23', (done) ->
-    Sector.find {_id: 0x23}, (err, data) ->
-      sector = data[0]
-      sector.boxes.push 0x11, 0x12, 0x13
-      sector.save (err) ->
-        expect(err).to.be.null
-        done()
+    Sector.findOne {_id: 0x23}, (err, sector) ->
+      Box.find (err, boxes) ->
+        sector.boxes.push (boxes.map (box) -> box._id)...
+        sector.save (err) ->
+          expect(err).to.be.null
+          done()
 
   it 'has three boxes on 0x23', (done) ->
-    Sector.find {_id: 0x23}, (err, data) ->
-      sector = data[0]
+    Sector.findOne {_id: 0x23}, (err, sector) ->
       expect(sector.boxes).to.be.an 'array'
       expect(sector.boxes).to.have.length(3)
       done()
 
   it 'has boxes as children', (done) ->
-    Sector.find(_id: 0x23)
+    Sector.findOne(_id: 0x23)
     .populate('boxes')
-    .exec (err, data) ->
-      sector = data[0]
+    .exec (err, sector) ->
       expect(sector.boxes).to.be.an 'array'
       expect(sector.boxes).to.be.not.empty
-      for box in sector.boxes
-        expect(box).to.instanceof Box
+      expect(box).to.instanceof Box for box in sector.boxes
       done()
 
 
