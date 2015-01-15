@@ -32,97 +32,49 @@ class Drone
         return false
       return false if @validate(jsonData) is false
 
-      switch jsonData.method
-        when DroneMethods.REGISTER
-          if jsonData.boxes.length is 0
-            @respondWith "Drone #{jsonData.droneId} has no boxes"
-
-          else
-            for boxId in jsonData.boxes
-              @register boxId, jsonData.droneId
-
-        when DroneMethods.STATUS
-          @setAvaiable jsonData.boxId, jsonData.avaiable
+      @setAvaiable jsonData
 
   # Registra um box na base de dados
-  register: (boxId, droneId) ->
-    Box.findOne {_id: boxId}, (err, box) =>
+  register: (data) ->
+    Box.create
+      id: data.boxId
+      droneId: data.droneId
+      droneAddress: _client.remoteAddress
+      occupied: data.occupied
+    , (err) =>
       return @handleError(err) if err?
-      # se encontrou
-      if box?
-        # primeiro verifica se é o mesmo drone
-        if box.drone.id == droneId
-          @respondWith "Box #{boxId} already registered for Drone #{droneId}"
-        # se não for, atualiza
-        else
-          box.drone =
-            id: droneId
-            address: _client.address().address
-          box.save (err) =>
-            return @handleError(err) if err?
-            @respondWith "Box #{boxId} moved to Drone #{droneId}"
-      # se não encontrar, registra novo
-      else
-        Box.create
-          _id: boxId
-          drone:
-            id: droneId
-            address: _client.address().address
-        , (err) =>
-          return @handleError(err) if err?
-          @respondWith "Box #{boxId} registered for Drone #{droneId}"
+      @respondWith "Box #{data.boxId} registered for Drone #{data.droneId}"
+      @respondWith "Box #{data.boxId} marked as
+        #{ ['available', 'occupied'][+data.occupied] }"
 
   # Marca um box como livre ou ocupado
-  setAvaiable: (boxId, avaiable = 0) ->
-    Box.findOne {_id: boxId}, (err, box) =>
+  setAvaiable: (data) ->
+    Box.findOne {id: data.boxId, droneId: data.droneId}, (err, box) =>
       return @handleError(err) if err?
       # se encontrou, atualiza o estado
       if box?
-        box.avaiable = avaiable
+        box.occupied = data.occupied
         box.save (err) =>
           return @handleError(err) if err?
-          @respondWith "Box #{boxId} marked as #{
-            if avaiable in [1, true]
-              'avaiable'
-            else
-              'occupied'
-          }"
+          @respondWith "Box #{data.boxId} marked as
+            #{ ['available', 'occupied'][+data.occupied] }"
       else
-        @respondWith "Box #{boxId} not found"
+        # box not found, register
+        @register data
 
   # Valida se os dados enviados são corretos
   validate: (data) ->
-    if typeof data.method isnt 'string'
-      @respondWith "Method not defined. #{JSON.stringify data}"
-      return false
-
     if typeof data.droneId isnt 'number'
       @respondWith "Drone id not defined. #{JSON.stringify data}"
       return false
 
-    switch data.method
-      when DroneMethods.REGISTER
-        if not data.boxes instanceof Array
-          @respondWith "Boxes not defined. #{JSON.stringify data}"
-          return false
+    if typeof data.boxId isnt 'number'
+      @respondWith "Box id not defined. #{JSON.stringify data}"
+      return false
 
-        for b in data.boxes
-          if typeof b isnt 'number'
-            @respondWith "Bix id not defined. #{JSON.stringify data}"
-            return false
-
-      when DroneMethods.STATUS
-        if typeof data.boxId isnt 'number'
-          @respondWith "Box id not defined. #{JSON.stringify data}"
-          return false
-
-        if data.avaiable not in [0, 1, false, true]
-          @respondWith "Invalid value for avaiable. #{JSON.stringify data}"
-          return false
-
-      else
-        @respondWith "Invalid method. #{JSON.stringify data}"
-        return false
+    if data.occupied not in [0, 1, false, true]
+      @respondWith "Invalid value for occupied. #{JSON.stringify data}"
+      return false
 
     true
 
