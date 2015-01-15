@@ -7,12 +7,17 @@ a {
   color: #00B7FF;
 }
 
-.vagas-setores{
+.vagas-setores {
+  float: right;
   height: 40px;
   width: 40px;
-  background-color: #009900;
   font-weight: bold;
   color: #ffffff;
   text-align: center;
   padding-top: 10px;
+  /*margin: 12px 24px;*/
 }
+
+.vagas-setores.empty { background-color: #009900; }
+.vagas-setores.half { background-color: #ec971f; }
+.vagas-setores.full { background-color: #c9302c; }
