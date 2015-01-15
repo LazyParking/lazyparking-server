@@ -4,4 +4,17 @@ block content
 
   div.jumbotron
     h1= title
-    span Seja bem-vindo ao #{title}. We have coffee \o/
+    span
+      | Seja bem-vindo ao #{title}. Com esse pequeno experimento, queremos demonstrar que é
+      | possível <strong>ter controle</strong> de seu estacionamento.
+
+
+  .row
+    for sector in sectors
+      .col-md-6.col-sm-12
+        .panel(class=sector.panel_class)
+          .panel-heading
+            .vagas-setores.img-circle(class=sector.status) #{sector.boxes_available}
+            h4 Nome do setor
+          .panel-body
+            | Something else

@@ -8,7 +8,8 @@ Box.find().remove ->
     Box.create
       id: id
       droneId: 0x1
-      droneAddress: '127.0.0.1'
+      droneAddress: '127.0.0.1',
+      occupied: if id < 8 then false else true
     , (err, box) ->
       if err
         console.error err

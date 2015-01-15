@@ -40,6 +40,7 @@ Add for each route/*
 app.use "/", require("./routes/index")
 app.use "/users", require("./routes/users")
 app.use "/boxes", require("./routes/boxes")
+app.use "/pages", require("./routes/pages")
 
 # add environment to jade templates
 app.locals.env = app.get('env')

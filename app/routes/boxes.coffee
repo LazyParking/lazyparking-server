@@ -9,7 +9,8 @@ router.get "/", (req, res) ->
     console.log err if err
     res.render 'box/list',
       boxes: data,
-      title: "Lazy Parking"
+      title: "Lazy Parking",
+      pageName: 'boxes'
   return
 
 module.exports = router
