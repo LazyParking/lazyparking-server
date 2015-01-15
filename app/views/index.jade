@@ -10,19 +10,11 @@ block content
 
 
   .row
-    .col-xs-3.col-sm-3.placeholder
-      div.vagas-setores.img-circle 999
-      h4 Label
-      span.text-muted Something else
-    .col-xs-3.col-sm-3.placeholder
-      div.vagas-setores.img-circle.progress-bar-warning 888
-      h4 Label
-      span.text-muted Something else
-    .col-xs-3.col-sm-3.placeholder
-      div.vagas-setores.img-circle.progress-bar-info 777
-      h4 Label
-      span.text-muted Something else
-    .col-xs-3.col-sm-3.placeholder
-      div.vagas-setores.img-circle.progress-bar-danger 667
-      h4 Label
-      span.text-muted Something else
+    for sector in sectors
+      .col-md-6.col-sm-12
+        .panel(class=sector.panel_class)
+          .panel-heading
+            .vagas-setores.img-circle(class=sector.status) #{sector.boxes_available}
+            h4 Nome do setor
+          .panel-body
+            | Something else
