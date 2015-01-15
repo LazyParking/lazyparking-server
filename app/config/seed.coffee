@@ -5,26 +5,20 @@ Sector = require("../models/sector")
 boxes = []
 Box.find().remove ->
   for id in [0..9]
-    boxes.push id
     Box.create
-      _id: id
-      avaiable: true
-      drone:
-        id: 0x1
-        address: '127.0.0.1'
-    , (err) ->
+      id: id
+      droneId: 0x1
+      droneAddress: '127.0.0.1'
+    , (err, box) ->
       if err
         console.error err
         return
+      boxes.push box._id
 
 
 # create sectors and add boxes to then
 Sector.find().remove ->
   Sector.create
-    _id: 0
-    name: 'Sem setor'
-    boxes: []
-  ,
     _id: 0x1
     name: 'Setor de teste 001'
     boxes: boxes
