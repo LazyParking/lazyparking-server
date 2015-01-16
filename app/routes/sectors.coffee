@@ -4,7 +4,8 @@ _       = require("lodash")
 
 Sector = require("../models/sector")
 
-# GET users listing.
+# Home action, with available boxes
+# for each sector
 router.get "/", (req, res) ->
   # find sectors
   Sector.find().populate('boxes').exec (err, sectors) ->
@@ -19,10 +20,11 @@ router.get "/", (req, res) ->
       total      : get_status(sector.boxes)
 
     # render view
-    res.render 'sector/list',
+    res.render 'sector/home',
       title   : "Lazy Parking"
       pageName: 'home'
       sectors : sector_data
+
 
 get_available = (boxes) ->
   available = _.filter boxes, (box) ->
