@@ -2,11 +2,13 @@ mongoose = require("mongoose")
 Schema   = mongoose.Schema
 
 SectorSchema = new Schema
-  _id    : {type: Number, required: true, unique: true}
-  name   : String
-  boxes  : [{type: Schema.Types.ObjectId, ref: 'Box'}] # population
-  created: {type: Date, default: Date.now}
-  updated: {type: Date, default: Date.now}
+  _id        : {type: Number, required: true, unique: true}
+  name       : String
+  description: String
+  gate       : String
+  boxes      : [{type: Schema.Types.ObjectId, ref: 'Box'}] # population
+  created    : {type: Date, default: Date.now}
+  updated    : {type: Date, default: Date.now}
 
 # update the update date
 SectorSchema.pre 'save', (next) ->

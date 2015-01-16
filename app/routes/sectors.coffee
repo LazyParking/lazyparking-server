@@ -34,6 +34,16 @@ router.get "/index", (req, res) ->
       pageName: 'sectors'
       sectors : sectors
 
+# Add/edit sectors
+addAction = (req, res) ->
+  unless req.params.sector_id?
+    return res.render 'sector/form',
+      title   : "Lazy Parking"
+      pageName: 'sectors'
+
+router.get "/add"            , addAction
+router.get "/edit/:sector_id", addAction
+
 get_available = (boxes) ->
   available = _.filter boxes, (box) ->
     box.occupied is false
