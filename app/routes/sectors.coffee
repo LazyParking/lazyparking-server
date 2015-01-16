@@ -56,7 +56,8 @@ router.get "/edit/:sector_id", editAction
 # Save the sector
 router.post "/save", (req, res) ->
   if req.body._id?
-    Sector.update _id: new ObjectId(req.body._id), _.omit(req.body, '_id'), (err, sector) ->
+    id = new ObjectId(req.body._id)
+    Sector.update _id: id, _.omit(req.body, '_id'), (err, sector) ->
       return console.error err if err
       res.redirect '/sectors/index'
   else
@@ -64,6 +65,17 @@ router.post "/save", (req, res) ->
       return console.error err if err
       res.redirect '/sectors/index'
 
+# Delete a sector
+router.get "/delete/:sector_id", (req, res) ->
+  Sector.findOne _id: new ObjectId(req.params.sector_id), (err, sector) ->
+    return console.error err if err
+    if sector
+      sector.remove (err) ->
+        return console.error err if err
+        res.redirect '/sectors/index'
+
+#
+# private functions
 
 get_available = (boxes) ->
   available = _.filter boxes, (box) ->
