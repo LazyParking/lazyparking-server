@@ -2,7 +2,6 @@ mongoose = require("mongoose")
 Schema   = mongoose.Schema
 
 SectorSchema = new Schema
-  _id        : {type: Number, required: true, unique: true}
   name       : String
   description: String
   gate       : String

@@ -20,9 +20,13 @@ Box.find().remove ->
 # create sectors and add boxes to then
 Sector.find().remove ->
   Sector.create
-    _id: 0x1
-    name: 'Setor de teste 001'
+    name : 'Setor de teste 001'
     boxes: boxes
+    gate : 'Portão 1'
+  ,
+    name : 'Setor de teste 002'
+    boxes: []
+    gate : 'Portão 2'
   , (err) ->
     if err
       console.error err
