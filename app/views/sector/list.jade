@@ -7,24 +7,25 @@ block content
       table.table.table-stripped.table-hover
         thead
           tr
-            th.right Id
             th Nome do setor
+            th Portão
             th.right Total de vagas
             th.actions Ações
         tbody
           for sector in sectors
-            td.right= sector.id
-            td= sector.name
-            td.right= sector.boxes.length
-            td.actions
-              a(href="/sector/view/#{sector.id}").btn.btn-xs: i.glyphicon.glyphicon-eye-open
-              a(href="/sector/edit/#{sector.id}").btn.btn-xs: i.glyphicon.glyphicon-pencil
-              a(href="/sector/delete/#{sector.id}").btn.btn-xs: i.glyphicon.glyphicon-trash
+            tr
+              td= sector.name
+              td= sector.gate
+              td.right= sector.boxes.length
+              td.actions
+                a(href="/sectors/view/#{sector.id}").btn.btn-xs: i.glyphicon.glyphicon-eye-open
+                a(href="/sectors/edit/#{sector.id}").btn.btn-xs: i.glyphicon.glyphicon-pencil
+                a(href="/sectors/delete/#{sector.id}").btn.btn-xs: i.glyphicon.glyphicon-trash
 
     .col-md-4
       h2 Ações
       ul.nav.nav-pills.nav-stacked
         li(role="presentation").active
-          a(href="/sector/index"): i.glyphicon.glyphicon-list: |&nbsp;Listar
+          a(href="/sectors/index"): i.glyphicon.glyphicon-list: |&nbsp;Listar
         li(role="presentation")
-          a(href="/sector/add"): i.glyphicon.glyphicon-plus-sign: |&nbsp;Adicionar
+          a(href="/sectors/add"): i.glyphicon.glyphicon-plus-sign: |&nbsp;Adicionar

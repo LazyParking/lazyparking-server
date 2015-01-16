@@ -1,6 +1,7 @@
-express = require("express")
-router  = express.Router()
-_       = require("lodash")
+express  = require("express")
+router   = express.Router()
+_        = require("lodash")
+ObjectId = require('mongoose').Types.ObjectId
 
 Sector = require("../models/sector")
 
@@ -35,22 +36,34 @@ router.get "/index", (req, res) ->
       sectors : sectors
 
 # Add/edit sectors
-saveAction = (req, res) ->
+editAction = (req, res) ->
   unless req.params.sector_id?
-    return res.render 'sector/form',
-      title   : "Lazy Parking"
-      pageName: 'sectors'
-
-  Sector.findOne req.params.sector_id, (err, sector) ->
-    return console.error err if err
     res.render 'sector/form',
       title   : "Lazy Parking"
       pageName: 'sectors'
-      sector  : sector
+  else
+    Sector.findOne _id: new ObjectId(req.params.sector_id), (err, sector) ->
+      return console.error err if err
+      res.render 'sector/form',
+        title   : "Lazy Parking"
+        pageName: 'sectors'
+        sector  : sector
 
-router.get "/add"            , saveAction
-router.get "/edit/:sector_id", saveAction
-router.get "/save"           , saveAction
+# Routes for the fom view
+router.get "/add"            , editAction
+router.get "/edit/:sector_id", editAction
+
+# Save the sector
+router.post "/save", (req, res) ->
+  if req.body._id?
+    Sector.update _id: new ObjectId(req.body._id), _.omit(req.body, '_id'), (err, sector) ->
+      return console.error err if err
+      res.redirect '/sectors/index'
+  else
+    Sector.create req.body, (err, sector) ->
+      return console.error err if err
+      res.redirect '/sectors/index'
+
 
 get_available = (boxes) ->
   available = _.filter boxes, (box) ->

@@ -37,10 +37,10 @@ Application routes goes here
 
 Add for each route/*
 ###
-app.use "/"      , require("./routes/sectors")
-app.use "/sector", require("./routes/sectors")
-app.use "/users" , require("./routes/users")
-app.use "/pages" , require("./routes/pages")
+app.use "/"       , require("./routes/sectors")
+app.use "/sectors", require("./routes/sectors")
+app.use "/users"  , require("./routes/users")
+app.use "/pages"  , require("./routes/pages")
 
 # add environment to jade templates
 app.locals.env = app.get('env')
