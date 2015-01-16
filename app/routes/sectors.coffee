@@ -25,6 +25,14 @@ router.get "/", (req, res) ->
       pageName: 'home'
       sectors : sector_data
 
+# Full sector index
+router.get "/index", (req, res) ->
+  # find sectors
+  Sector.find (err, sectors) ->
+    res.render 'sector/list',
+      title   : "Lazy Parking"
+      pageName: 'sectors'
+      sectors : sectors
 
 get_available = (boxes) ->
   available = _.filter boxes, (box) ->

@@ -21,3 +21,12 @@ a {
 .vagas-setores.empty { background-color: #009900; }
 .vagas-setores.half { background-color: #ec971f; }
 .vagas-setores.full { background-color: #c9302c; }
+
+.table .actions {
+  width: 120px;
+  text-align: center;
+}
+
+.table .right {
+  text-align: right;
+}
