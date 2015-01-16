@@ -35,14 +35,22 @@ router.get "/index", (req, res) ->
       sectors : sectors
 
 # Add/edit sectors
-addAction = (req, res) ->
+saveAction = (req, res) ->
   unless req.params.sector_id?
     return res.render 'sector/form',
       title   : "Lazy Parking"
       pageName: 'sectors'
 
-router.get "/add"            , addAction
-router.get "/edit/:sector_id", addAction
+  Sector.findOne req.params.sector_id, (err, sector) ->
+    return console.error err if err
+    res.render 'sector/form',
+      title   : "Lazy Parking"
+      pageName: 'sectors'
+      sector  : sector
+
+router.get "/add"            , saveAction
+router.get "/edit/:sector_id", saveAction
+router.get "/save"           , saveAction
 
 get_available = (boxes) ->
   available = _.filter boxes, (box) ->

@@ -4,14 +4,14 @@ block content
   .row
     .col-md-8.col-sm-12
       if sector && sector.id
-        h1= "Editando #{sector.name}"
+        h1 Editando #{sector.name}
       else
         h1 Novo Setor
       form(action="/sectors/save")
         if sector
           div.form-group
             label(form="id").control-label Id
-            - sector.id
+            input#id.form-control(disabled, value=sector.id)
         div.form-group
           label(form="name").control-label Nome
           input#name.form-control(placeholder="Nome do setor", value=sector ? sector.name : null)
