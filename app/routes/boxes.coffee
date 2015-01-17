@@ -61,6 +61,12 @@ router.get "/delete/:box_id", (req, res) ->
   Box.findOne _id: new ObjectId(req.params.box_id), (err, box) ->
     return console.error err if err
     if box
+      # find the old sector
+      Sector.findOne _id: box.sector, (err, sector) ->
+        return console.error err if err
+        sector.removeBox box._id, (err) ->
+          return console.error err if err
+      # remove box
       box.remove (err) ->
         return console.error err if err
         res.redirect '/boxes/index'
