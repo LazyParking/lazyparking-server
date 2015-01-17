@@ -42,10 +42,11 @@ router.post "/save", (req, res) ->
     Box.findOne _id: box_id, (err, box) ->
       return console.error err if err
       # find the old sector
-      Sector.findOne _id: box.sector, (err, sector) ->
-        return console.error err if err
-        sector.removeBox box._id, (err) ->
+      if box.sector
+        Sector.findOne _id: box.sector, (err, sector) ->
           return console.error err if err
+          sector.removeBox box._id, (err) ->
+            return console.error err if err
       # find the new sector
       Sector.findOne _id: sector_id, (err, sector) ->
         return console.error err if err

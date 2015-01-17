@@ -16,7 +16,8 @@ block content
           label(form="sector").control-label Setor
           select#sector.form-control(name="sector")
             for sector in sectors
-              option(value=sector._id,select=(sector._id == box.sector._id))= sector.name
+              - saved_id = (box.sector) ? box.sector._id : null
+              option(value=sector._id,select=(sector._id == saved_id))= sector.name
         button(type="submit").btn.btn-primary Enviar
 
     .col-md-4
