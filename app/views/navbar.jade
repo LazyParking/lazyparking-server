@@ -1,34 +1,20 @@
 block navbar
-   - homeClass = ('home' == activeNav) ? 'active' : ''
-   - boxesClass = ('boxes' == activeNav) ? 'active' : ''
+   - sectorsClass = ('sectors' == activeNav) ? 'active' : ''
+   - boxesClass   = ('boxes'   == activeNav) ? 'active' : ''
    - contactClass = ('contact' == activeNav) ? 'active' : ''
-   - aboutClass = ('about' == activeNav) ? 'active' : ''
+   - aboutClass   = ('about'   == activeNav) ? 'active' : ''
   .navbar-header
     button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
       span.sr-only Toggle navigation
       span.icon-bar
-      span.icon-bar
-      span.icon-bar
     a.navbar-brand(href='/') #{title}
   #navbar.navbar-collapse.collapse
-    ul.nav.navbar-nav
-      li(class=homeClass)
-        a(href='/') Home
     ul.nav.navbar-nav.navbar-right
-      li(class=contactClass)
-        a(href='/pages/contact') Contato
-      li(class=aboutClass)
-        a(href='/pages/about') Sobre
+      li(class=contactClass): a(href='/pages/contact') Contato
+      li(class=aboutClass): a(href='/pages/about') Sobre
       li.dropdown
         a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false') Administração
           span.caret
         ul.dropdown-menu(role='menu')
-          li
-            a(href='#') Login
-          li
-            a(href='/sectors/index') Setores
-          li
-            a(href='/boxes') Boxes
-          li.divider
-          li
-            a(href='#') Logoff
+          li(class=sectorsClass): a(href='/sectors/index') Setores
+          li(class=boxesClass): a(href='/boxes') Vagas
