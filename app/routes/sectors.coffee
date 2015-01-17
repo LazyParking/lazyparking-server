@@ -15,6 +15,7 @@ router.get "/", (req, res) ->
     # prepare data for view
     sector_data = sectors.map (sector) ->
       name       : sector.name
+      description: sector.description
       available  : get_available(sector.boxes).length
       status     : get_status(sector.boxes) #'empty'
       panel_class: 'panel-' + get_panelClass(sector.boxes)
@@ -84,8 +85,8 @@ get_available = (boxes) ->
 get_status = (boxes) ->
   total = get_available(boxes).length / boxes.length
   status = switch
-    when total <= 0.50 then 'half'
     when total <= 0.25 then 'full'
+    when total <= 0.50 then 'half'
     else 'empty'
 
 get_panelClass = (boxes) ->
