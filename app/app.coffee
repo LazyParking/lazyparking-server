@@ -39,6 +39,7 @@ Add for each route/*
 ###
 app.use "/"       , require("./routes/sectors")
 app.use "/sectors", require("./routes/sectors")
+app.use "/boxes"  , require("./routes/boxes")
 app.use "/users"  , require("./routes/users")
 app.use "/pages"  , require("./routes/pages")
 
