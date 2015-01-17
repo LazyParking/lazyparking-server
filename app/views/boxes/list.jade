@@ -4,19 +4,27 @@ block content
   .row
     .col-md-8.col-sm-12
       h1 Vagas
-      table.table.table-stripped.table-hover
+      table.table.table-striped.table-hover
         thead
           tr
             th Nome do setor
             th Identificação da vaga
             th.center Estado da vaga
+            th.center Última atualização
             th.actions Ações
         tbody
           for box in boxes
-            tr
+            tr(class=(box.occupied) ? 'text-muted' : '')
               td foo bar
               td Box #{box.id} (Drone #{box.droneId})
-              td.center= (box.occupied) ? 'Ocupado' : 'Livre'
+              td.center
+                if box.occupied
+                  i.glyphicon.glyphicon-ban-circle
+                  |&nbsp;Ocupado
+                else
+                  i.glyphicon.glyphicon-ok-circle.text-success
+                  |&nbsp;Livre
+              td.center= moment(box.updated).format("DD/MM/YYYY hh:mm:ss")
               td.actions
                 a(href="/boxes/delete/#{box._id}").btn.btn-xs: i.glyphicon.glyphicon-trash
 

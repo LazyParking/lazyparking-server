@@ -1,6 +1,7 @@
 express  = require("express")
 router   = express.Router()
-ObjectId = require('mongoose').Types.ObjectId
+ObjectId = require("mongoose").Types.ObjectId
+moment   = require("moment")
 
 Box = require("../models/box")
 
@@ -12,6 +13,7 @@ indexAction = (req, res) ->
       title   : "Lazy Parking"
       pageName: 'boxes'
       boxes   : boxes
+      moment  : moment  # allow use moment on the view
 
 # Routes for index
 router.get "/"     , indexAction
