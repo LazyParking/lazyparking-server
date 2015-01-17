@@ -1,16 +1,29 @@
-express = require("express")
-router = express.Router()
+express  = require("express")
+router   = express.Router()
+ObjectId = require('mongoose').Types.ObjectId
 
 Box = require("../models/box")
 
-# GET users listing.
-router.get "/", (req, res) ->
-  Box.find {}, (err, data) ->
+# Index action/listing
+indexAction = (req, res) ->
+  Box.find (err, boxes) ->
     console.log err if err
     res.render 'boxes/list',
-      boxes: data,
-      title: "Lazy Parking",
+      title   : "Lazy Parking"
       pageName: 'boxes'
-  return
+      boxes   : boxes
+
+# Routes for index
+router.get "/"     , indexAction
+router.get "/index", indexAction
+
+# Deletes a box
+router.get "/delete/:box_id", (req, res) ->
+  Box.findOne _id: new ObjectId(req.params.box_id), (err, box) ->
+    return console.error err if err
+    if box
+      box.remove (err) ->
+        return console.error err if err
+        res.redirect '/boxes/index'
 
 module.exports = router
