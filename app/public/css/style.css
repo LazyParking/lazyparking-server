@@ -30,3 +30,7 @@ a {
 .table .right {
   text-align: right;
 }
+
+.table .center {
+  text-align: center;
+}

@@ -1,20 +1,37 @@
 extends ../layout
 
 block content
+  .row
+    .col-md-8.col-sm-12
+      h1 Vagas
+      table.table.table-striped.table-hover
+        thead
+          tr
+            th Nome do setor
+            th Identificação da vaga
+            th.center Estado da vaga
+            th.center Última atualização
+            th.actions Ações
+        tbody
+          for box in boxes
+            tr(class=(box.occupied) ? 'text-muted' : '')
+              td= box.sector.name
+              td Box #{box.id} (Drone #{box.droneId})
+              td.center
+                if box.occupied
+                  i.glyphicon.glyphicon-ban-circle
+                  |&nbsp;Ocupado
+                else
+                  i.glyphicon.glyphicon-ok-circle.text-success
+                  |&nbsp;Livre
+              td.center= moment(box.updated).format("DD/MM/YYYY hh:mm:ss")
+              td.actions
+                a(href="/boxes/delete/#{box._id}").btn.btn-xs: i.glyphicon.glyphicon-trash
 
-  ul
-    for box in boxes
-      - status = (box.occupied) ? 'Ocupado' : 'Livre'
-      li Box #{box.id} (Drone: #{box.droneId}) - Status: #{status}
-      //
-        {
-          id: 0,
-          droneId: 1,
-          droneAddress:
-          '127.0.0.1',
-          _id: 54b9a25549749d667779eb7c,
-          __v: 0,
-          updated: Fri Jan 16 2015 21:44:21 GMT-0200 (BRST),
-          created: Fri Jan 16 2015 21:44:21 GMT-0200 (BRST),
-          occupied: false
-        }
+    .col-md-4
+      h2 Ações
+      ul.nav.nav-pills.nav-stacked
+        li(role="presentation").active
+          a(href="/boxes/index")
+            i.glyphicon.glyphicon-list
+            |&nbsp;Listar

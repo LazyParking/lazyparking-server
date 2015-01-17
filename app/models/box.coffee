@@ -6,6 +6,7 @@ BoxSchema = new Schema
   droneId     : {type: Number, required: true}
   droneAddress: {type: String, required: true}
   occupied    : {type: Boolean, default: false}
+  sector      : {type: Schema.Types.ObjectId, ref: 'Sector'} # population
   created     : {type: Date, default: Date.now}
   updated     : {type: Date, default: Date.now}
 
