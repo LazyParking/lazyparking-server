@@ -85,8 +85,8 @@ get_available = (boxes) ->
 get_status = (boxes) ->
   total = get_available(boxes).length / boxes.length
   status = switch
-    when total <= 0.25 then 'full'
-    when total <= 0.50 then 'half'
+    when total < 0.25 then 'full'
+    when total < 0.50 then 'half'
     else 'empty'
 
 get_panelClass = (boxes) ->
