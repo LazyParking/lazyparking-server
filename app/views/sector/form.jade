@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-8.col-sm-12
+      if sector && sector._id
+        h1 Editando #{sector.name}
+      else
+        h1 Novo Setor
+      form(action="/sectors/save", method="POST")
+        if sector
+          div.form-group
+            label(form="_id").control-label Id
+            input#_id.form-control(name="_id", readonly, value=sector._id)
+        div.form-group
+          label(form="name").control-label Nome
+          input#name.form-control(name="name", placeholder="Nome do setor", value=sector ? sector.name : null)
+        div.form-group
+          label(form="description").control-label Descrição
+          textarea#description.form-control(name="description", placeholder="Descrição do setor", rows="3")= sector ? sector.description : null
+        div.form-group
+          label(form="gate").control-label Portão
+          input#gate.form-control(name="gate", placeholder="Portão de acesso", value=sector ? sector.gate : null)
+        button(type="submit").btn.btn-primary Enviar
+
+    .col-md-4
+      h2 Ações
+      ul.nav.nav-pills.nav-stacked
+        li(role="presentation")
+          a(href="/sectors/index"): i.glyphicon.glyphicon-list: |&nbsp;Listar
+        li(role="presentation", class=sector ? null : "active")
+          a(href="/sectors/add"): i.glyphicon.glyphicon-plus-sign: |&nbsp;Adicionar

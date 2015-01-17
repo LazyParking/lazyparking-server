@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  div.jumbotron
+    h1= title
+    span
+      | Seja bem-vindo ao #{title}. Com esse pequeno experimento, queremos demonstrar que é
+      | possível <strong>ter controle</strong> de seu estacionamento.
+
+
+  .row
+    for sector in sectors
+      .col-md-6.col-sm-12
+        .panel(class=sector.panel_class)
+          .panel-heading
+            .vagas-setores.img-circle(class=sector.status) #{sector.available}
+            h4= sector.name
+          .panel-body
+            | Something else is #{sector.total}
