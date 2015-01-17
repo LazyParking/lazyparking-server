@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-8.col-sm-12
+      if box && box._id
+        h1 Editando Box #{box.id} (Drone #{box.droneId})
+      else
+        h1 Novo Box
+      form(action="/boxes/save", method="POST")
+        if box
+          div.form-group
+            label(form="_id").control-label Id
+            input#_id.form-control(name="_id", readonly, value=box._id)
+        div.form-group
+          label(form="sector").control-label Setor
+          select#sector.form-control(name="sector")
+            for sector in sectors
+              option(value=sector._id,select=(sector._id == box.sector._id))= sector.name
+        button(type="submit").btn.btn-primary Enviar
+
+    .col-md-4
+      h2 Ações
+      ul.nav.nav-pills.nav-stacked
+        li(role="presentation")
+          a(href="/boxes/index")
+            i.glyphicon.glyphicon-list
+            |&nbsp;Listar
