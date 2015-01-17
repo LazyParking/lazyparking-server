@@ -26,6 +26,7 @@ block content
                   |&nbsp;Livre
               td.center= moment(box.updated).format("DD/MM/YYYY hh:mm:ss")
               td.actions
+                a(href="/boxes/edit/#{box._id}").btn.btn-xs: i.glyphicon.glyphicon-pencil
                 a(href="/boxes/delete/#{box._id}").btn.btn-xs: i.glyphicon.glyphicon-trash
 
     .col-md-4
