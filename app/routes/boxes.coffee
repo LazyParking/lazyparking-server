@@ -7,7 +7,7 @@ Box = require("../models/box")
 
 # Index action/listing
 indexAction = (req, res) ->
-  Box.find().populate('sector').exec (err, boxes) ->
+  Box.find().sort('droneId, id').populate('sector').exec (err, boxes) ->
     console.log err if err
     res.render 'boxes/list',
       title   : "Lazy Parking"
