@@ -15,7 +15,7 @@ block content
         tbody
           for box in boxes
             tr(class=(box.occupied) ? 'text-muted' : '')
-              td= box.sector.name
+              td= (box.sector) ? box.sector.name : ''
               td Box #{box.id} (Drone #{box.droneId})
               td.center
                 if box.occupied
