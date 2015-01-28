@@ -4,7 +4,7 @@ block content
   .row
     .col-md-8.col-sm-12
       h1 Vagas
-      table.table.table-striped.table-hover
+      table#box-list.table.table-striped.table-hover
         thead
           tr
             th Nome do setor
@@ -14,17 +14,17 @@ block content
             th.actions Ações
         tbody
           for box in boxes
-            tr(class=(box.occupied) ? 'text-muted' : '')
+            tr(class=(box.occupied) ? 'text-muted' : '', data-id=box.id, data-drone-id=box.droneId)
               td= (box.sector) ? box.sector.name : ''
               td Box #{box.id} (Drone #{box.droneId})
-              td.center
+              td.center(data-binding="occupied")
                 if box.occupied
                   i.glyphicon.glyphicon-ban-circle
                   |&nbsp;Ocupado
                 else
                   i.glyphicon.glyphicon-ok-circle.text-success
                   |&nbsp;Livre
-              td.center= moment(box.updated).format("DD/MM/YYYY hh:mm:ss")
+              td.center(data-binding="updated")= moment(box.updated).format("DD/MM/YYYY hh:mm:ss")
               td.actions
                 a(href="/boxes/edit/#{box._id}").btn.btn-xs: i.glyphicon.glyphicon-pencil
                 a(href="/boxes/delete/#{box._id}").btn.btn-xs: i.glyphicon.glyphicon-trash

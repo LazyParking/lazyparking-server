@@ -2,7 +2,6 @@ debug        = require('debug')('lazyparking-server')
 error        = require('debug')('lazyparking-server:error')
 _            = require("lodash")
 
-DroneMethods = require("../models/droneMethods")
 Box          = require("../models/box")
 
 # Recebe as informações do Drone
@@ -11,14 +10,25 @@ class Drone
   # @private
   _client = null
 
+  # Socket.IO client
+  # @private
+  #
+  # Emmited events are:
+  # * box register
+  #   creates a new box
+  # * box update
+  #   sets the occupied status of a box
+  _io = null
+
   # resposta a ser enviada para cliente
   # @private
   _response = ''
 
   # O contrutor adiciona referencia local para o cliente
   # e executa o método solicitado
-  constructor: (client) ->
+  constructor: (client, io) ->
     _client = client
+    _io     = io
 
     # evento 'data', executa o @process
     _client.on 'data', (data) =>
@@ -41,11 +51,12 @@ class Drone
       droneId: data.droneId
       droneAddress: _client.remoteAddress
       occupied: data.occupied
-    , (err) =>
+    , (err, box) =>
       return @handleError(err) if err?
       @respondWith "Box #{data.boxId} registered for Drone #{data.droneId}"
       @respondWith "Box #{data.boxId} marked as
         #{ ['available', 'occupied'][+data.occupied] }"
+      _io.emit 'box register', box
 
   # Marca um box como livre ou ocupado
   setAvaiable: (data) ->
@@ -54,10 +65,11 @@ class Drone
       # se encontrou, atualiza o estado
       if box?
         box.occupied = data.occupied
-        box.save (err) =>
+        box.save (err, box) =>
           return @handleError(err) if err?
           @respondWith "Box #{data.boxId} marked as
             #{ ['available', 'occupied'][+data.occupied] }"
+          _io.emit 'box update', box
       else
         # box not found, register
         @register data
