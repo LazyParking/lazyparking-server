@@ -3,8 +3,9 @@ IO Boxes module
  */
 require([
   '/socket.io/socket.io.js',
-  'jquery'
-], function(io, $) {
+  'jquery',
+  'moment'
+], function(io, $, moment) {
   var socket = io();
 
   // update status on box update
@@ -19,6 +20,6 @@ require([
     }
 
     $line.find('[data-binding="occupied"]').html(statusHtml);
-    $line.find('[data-binding="updated"]').html(box.updated);
+    $line.find('[data-binding="updated"]').html( moment(box.updated).format("DD/MM/YYYY hh:mm:ss") );
   });
 });
