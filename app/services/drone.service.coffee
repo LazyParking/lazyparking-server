@@ -51,12 +51,12 @@ class Drone
       droneId: data.droneId
       droneAddress: _client.remoteAddress
       occupied: data.occupied
-    , (err) =>
+    , (err, box) =>
       return @handleError(err) if err?
       @respondWith "Box #{data.boxId} registered for Drone #{data.droneId}"
       @respondWith "Box #{data.boxId} marked as
         #{ ['available', 'occupied'][+data.occupied] }"
-      _io.emit 'box register', data
+      _io.emit 'box register', box
 
   # Marca um box como livre ou ocupado
   setAvaiable: (data) ->
@@ -65,11 +65,11 @@ class Drone
       # se encontrou, atualiza o estado
       if box?
         box.occupied = data.occupied
-        box.save (err) =>
+        box.save (err, box) =>
           return @handleError(err) if err?
           @respondWith "Box #{data.boxId} marked as
             #{ ['available', 'occupied'][+data.occupied] }"
-          _io.emit 'box update', data
+          _io.emit 'box update', box
       else
         # box not found, register
         @register data
