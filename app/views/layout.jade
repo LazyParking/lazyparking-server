@@ -28,10 +28,6 @@ html(lang='pt_BR')
     .container
       block content
 
-    script(src="/lib/jquery/dist/jquery.min.js")
-    script(src="/lib/bootstrap/dist/js/bootstrap.min.js")
-    script(src="/socket.io/socket.io.js")
+    script(src="/lib/requirejs/require.js", data-main="/js/main.js")
     if env == 'development'
       script(src="http://localhost:35729/livereload.js?snipver=1")
-
-    block scripts
