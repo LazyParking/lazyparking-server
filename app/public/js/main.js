@@ -11,7 +11,8 @@ require.config({
 
 require([
   'jquery',
-  'bootstrap'
+  'bootstrap',
+  '/js/io-boxes.js'
 ], function($) {
   //do nothing
 });
