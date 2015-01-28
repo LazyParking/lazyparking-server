@@ -17,18 +17,21 @@ Box.find().remove ->
       boxes.push box._id
 
 
-# create sectors and add boxes to then
-Sector.find().remove ->
-  Sector.create
-    name : 'Setor de teste 001'
-    boxes: boxes
-    gate : 'Portão 1'
-  ,
-    name : 'Setor de teste 002'
-    boxes: []
-    gate : 'Portão 2'
-  , (err) ->
-    if err
-      console.error err
-      return
-    console.log 'Finish adding some sectors and boxes'
+# waits a timeout to allow create all boxes first
+setTimeout ->
+  # create sectors and add boxes to then
+  Sector.find().remove ->
+    Sector.create
+      name : 'Setor de teste 001'
+      boxes: boxes
+      gate : 'Portão 1'
+    ,
+      name : 'Setor de teste 002'
+      boxes: []
+      gate : 'Portão 2'
+    , (err) ->
+      if err
+        console.error err
+        return
+      console.log 'Finish adding some sectors and boxes'
+, 1000 # 1s
