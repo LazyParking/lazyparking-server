@@ -2,7 +2,6 @@ debug        = require('debug')('lazyparking-server')
 error        = require('debug')('lazyparking-server:error')
 _            = require("lodash")
 
-DroneMethods = require("../models/droneMethods")
 Box          = require("../models/box")
 
 # Recebe as informações do Drone
