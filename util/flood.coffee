@@ -59,17 +59,19 @@ drone = ->
 status = ->
   Boolean Math.floor(Math.random() * 2)
 
-# connect to the server
-client = net.connect
-  host: argv.host
-  port: argv.port
-, ->
-  # repeat action until quit
-  setInterval ->
+# repeat action until quit
+setInterval ->
+  # connect to the server
+  client = net.connect
+    host: argv.host
+    port: argv.port
+  , ->
     data = JSON.stringify
       droneId : drone()
       boxId   : box()
       occupied: status()
     console.log "sending #{data}"
     client.write data
-  , argv.delay
+    # end after 400ms
+    setTimeout ( -> client.end() ), 400
+, argv.delay
