@@ -9,6 +9,9 @@ mongoose     = require("mongoose")
 cfgMongo     = require("./config/mongodb")
 app          = express()
 
+http         = require('http').Server(app)
+io           = require('socket.io')(http)
+
 ###
 Connect to mongodb
 ###
@@ -78,4 +81,4 @@ app.use (err, req, res, next) ->
 if app.get("env") is "development"
   app.use require('connect-livereload')()
 
-module.exports = app
+module.exports = http

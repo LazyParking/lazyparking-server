@@ -4,24 +4,19 @@ require('coffee-script/register');
 var debug  = require('debug')('lazyparking-server');
 var server = require('../app/server');
 var app    = require('../app/app');
-var http   = require('http').Server(app);
-var io     = require('socket.io')(http);
 
 /*
 Start the Express App
  */
-app.set('port', process.env.HTTP_PORT || 3000);
-
-var http_server = http.listen(app.get('port'), function() {
+var http_server = app.listen(process.env.HTTP_PORT || 3000, function() {
   debug('Express server listening on port ' + http_server.address().port);
 });
 
 /*
 Start the backend services
-for communication with arduino
+for communication with drone
  */
 server.setPort(process.env.SERV_PORT || 3030);
-server.setSocketIo(io);
 
 server.start(function() {
     debug("Socket server started");
