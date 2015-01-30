@@ -3,22 +3,15 @@ error        = require('debug')('lazyparking-server:error')
 _            = require("lodash")
 
 Box          = require("../models/box")
+realtime     = require('./realtime.service')
 
-# Recebe as informações do Drone
+###
+Recebe as informações do Drone
+###
 class Drone
   # cliente TCP
   # @private
   _client = null
-
-  # Socket.IO client
-  # @private
-  #
-  # Emmited events are:
-  # * box register
-  #   creates a new box
-  # * box update
-  #   sets the occupied status of a box
-  _io = null
 
   # resposta a ser enviada para cliente
   # @private
@@ -26,9 +19,8 @@ class Drone
 
   # O contrutor adiciona referencia local para o cliente
   # e executa o método solicitado
-  constructor: (client, io) ->
+  constructor: (client) ->
     _client = client
-    _io     = io
 
     # evento 'data', executa o @process
     _client.on 'data', (data) =>
@@ -56,7 +48,7 @@ class Drone
       @respondWith "Box #{data.boxId} registered for Drone #{data.droneId}"
       @respondWith "Box #{data.boxId} marked as
         #{ ['available', 'occupied'][+data.occupied] }"
-      _io.emit 'box register', box
+      realtime.boxRegister box
 
   # Marca um box como livre ou ocupado
   setAvaiable: (data) ->
@@ -69,7 +61,7 @@ class Drone
           return @handleError(err) if err?
           @respondWith "Box #{data.boxId} marked as
             #{ ['available', 'occupied'][+data.occupied] }"
-          _io.emit 'box update', box
+          realtime.boxUpdate box
       else
         # box not found, register
         @register data
