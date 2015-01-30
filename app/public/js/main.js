@@ -18,6 +18,7 @@ require.config({
 require([
   'jquery',
   'bootstrap',
+  '/js/io-sectors.js',
   '/js/io-boxes.js'
 ], function($) {
   //do nothing
