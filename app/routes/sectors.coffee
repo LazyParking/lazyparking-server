@@ -14,6 +14,7 @@ router.get "/", (req, res) ->
 
     # prepare data for view
     sector_data = sectors.map (sector) ->
+      _id        : String(sector._id)
       name       : sector.name
       description: sector.description
       available  : sector.getAvailable().length

@@ -52,7 +52,7 @@ class Realtime
         return unless sector? # not found
         # emit event with count data
         @io.emit 'sector count',
-          _id      : sector._id
+          _id      : String(sector._id)
           available: sector.getAvailable().length
           status   : sector.getStatus()
 
