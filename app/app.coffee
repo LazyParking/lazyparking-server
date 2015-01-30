@@ -12,9 +12,12 @@ app          = express()
 http         = require('http').Server(app)
 io           = require('socket.io')(http)
 
-###
-Connect to mongodb
-###
+realtime     = require('./services/realtime.service')
+
+# attach socket.io to realtime instance
+realtime.setSocketIo io
+
+#Connect to mongodb
 mongodb_uri = "mongodb://#{cfgMongo.user}:#{cfgMongo.pass}" +
   "@#{cfgMongo.server}:#{cfgMongo.port}/#{cfgMongo.name}"
 mongoose.connect mongodb_uri
