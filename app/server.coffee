@@ -3,21 +3,14 @@ net    = require("net")
 
 Drone   = require("./services/drone.service")
 
-module.exports =
-  setPort: (@port) ->
+# create a net server
+server = net.createServer (client) ->
+  debug "server connected", client.remoteAddress
 
-  getPort: ->
-    @port
+  client.on "end", ->
+    debug "server disconnected"
 
-  setSocketIo: (@io) ->
+  # attach drone on each connection
+  new Drone(client)
 
-  start: (callback) ->
-    server = net.createServer (client) =>
-      debug "server connected", client.remoteAddress
-
-      client.on "end", ->
-        debug "server disconnected"
-
-      new Drone(client, @io)
-
-    server.listen @port, callback
+module.exports = server

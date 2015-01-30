@@ -16,9 +16,7 @@ var http_server = app.listen(process.env.HTTP_PORT || 3000, function() {
 Start the backend services
 for communication with drone
  */
-server.setPort(process.env.SERV_PORT || 3030);
-
-server.start(function() {
-    debug("Socket server started");
-    debug("Socket server listening on port " + server.getPort());
+server.listen(process.env.SERV_PORT || 3030, function() {
+  debug("Socket server started");
+  debug("Socket server listening on port " + server.address().port);
 });
