@@ -20,7 +20,7 @@ require([
 
     // update panel class
     $panel
-      .removeClass('warning', 'danger', 'success')
+      .removeClass('panel-warning', 'panel-danger', 'panel-success')
       .addClass(panelClasses[data.status]);
 
     // update available counter
