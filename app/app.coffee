@@ -9,9 +9,15 @@ mongoose     = require("mongoose")
 cfgMongo     = require("./config/mongodb")
 app          = express()
 
-###
-Connect to mongodb
-###
+http         = require('http').Server(app)
+io           = require('socket.io')(http)
+
+realtime     = require('./services/realtime.service')
+
+# attach socket.io to realtime instance
+realtime.setSocketIo io
+
+#Connect to mongodb
 mongodb_uri = "mongodb://#{cfgMongo.user}:#{cfgMongo.pass}" +
   "@#{cfgMongo.server}:#{cfgMongo.port}/#{cfgMongo.name}"
 mongoose.connect mongodb_uri
@@ -78,4 +84,4 @@ app.use (err, req, res, next) ->
 if app.get("env") is "development"
   app.use require('connect-livereload')()
 
-module.exports = app
+module.exports = http
