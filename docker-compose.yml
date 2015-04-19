@@ -8,6 +8,7 @@ server:
   environment:
     - NODE_ENV=development
     - DEBUG=lazyparking-server
+    - MONGODB_NAME=lazyparking-dev
 
 mongodb:
   image: mongo
