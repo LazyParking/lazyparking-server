@@ -1,4 +1,6 @@
 FROM node:0.10-onbuild
 
+MAINTAINER paulodiovani
+
 EXPOSE 3000
 EXPOSE 3030
