@@ -4,9 +4,26 @@
 
 The Server scripts for Lazy Park
 
+## Dependencies
+
+* [Node.js](http://nodejs.org) `0.10`
+
+* MongoDB
+  
+  By default, running on localhost on default port (`27017`) with
+  blank username and password.
+
+  Alternative configs should be provided through the folowing
+  environment variables:
+
+  - `MONGO_SERVER_ADDRESS`
+  - `MONGO_PORT_NUMBER`
+  - `MONGO_DB_USERNAME`
+  - `MONGO_DB_PASSWORD`
+  - `MONGO_DB_NAME`
+
 ## Install and running
 
-1. First, install [Node.js](http://nodejs.org)
 1. Get the sources from GitHub
     
         git clone https://github.com/LazyParking/lazyparking-server.git
@@ -33,4 +50,5 @@ You can acess http://localhost:3000 to reach the webpages.
 The _Drone_ communication service runs on port `3030`.
 
 You can test it by connecting with `telnet localhost 3030` and 
-sending some `JSON` data.
+sending some `JSON` data, or by running the util script
+`util/flood.coffee`.
