@@ -5,14 +5,14 @@ services:
   - mongodb
 env:
   global:
+    - NODE_ENV="test"
     - HTTP_PORT="3000"
     - SERV_PORT="3030"
-    - MONGODB_USER=""
-    - MONGODB_PASS=""
-    - MONGODB_SERVER="127.0.0.1"
-    - MONGODB_PORT=27017
-    - NODE_ENV="test"
-    - MONGODB_NAME="lazypark-test"
+    - MONGO_SERVER_ADDRESS="127.0.0.1"
+    - MONGO_PORT_NUMBER=27017
+    - MONGO_DB_USERNAME=""
+    - MONGO_DB_PASSWORD=""
+    - MONGO_DB_NAME="lazypark-test"
 before_install:
   - npm install -g bower grunt-cli
   - bower install
