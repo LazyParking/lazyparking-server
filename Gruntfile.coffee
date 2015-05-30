@@ -15,7 +15,7 @@ module.exports = (grunt) ->
       path:
         app: 'app'
         test: 'test'
-      
+
     # Watch for files changing
     watch:
       coffeescript:
@@ -138,7 +138,7 @@ module.exports = (grunt) ->
     env:
       options:
         add:
-          HTTP_PORT: 3000
+          PORT: 3000
           SERV_PORT: 3030
           MONGODB_USER: ''
           MONGODB_PASS: ''
@@ -162,7 +162,7 @@ module.exports = (grunt) ->
 
   # Making grunt default to force in order not to break the project.
   # grunt.option 'force', true
-  
+
   # Used for delaying livereload until after server has restarted
   grunt.registerTask "wait", ->
     grunt.log.ok "Waiting for server reload..."
@@ -192,13 +192,13 @@ module.exports = (grunt) ->
       "open"
       "watch"
     ]
-  
+
   # Lint task(s).
   grunt.registerTask 'lint', [
     'coffeelint'
     'jshint'
   ]
-  
+
   # Test task.
   grunt.registerTask 'test', [
     'env:test'
