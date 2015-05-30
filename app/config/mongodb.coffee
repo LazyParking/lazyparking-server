@@ -1,6 +1,7 @@
 env = process.env
 
 module.exports =
+  uri   : process.env.MONGOLAB_URI
   server: env.MONGO_SERVER_ADDRESS ||
           env.MONGO_PORT_27017_TCP_ADDR || 'localhost'
   port  : env.MONGO_PORT_NUMBER ||
