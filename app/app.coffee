@@ -18,7 +18,7 @@ realtime     = require('./services/realtime.service')
 realtime.setSocketIo io
 
 #Connect to mongodb
-mongodb_uri = "mongodb://#{cfgMongo.user}:#{cfgMongo.pass}" +
+mongodb_uri = cfgMongo.uri or "mongodb://#{cfgMongo.user}:#{cfgMongo.pass}" +
   "@#{cfgMongo.server}:#{cfgMongo.port}/#{cfgMongo.name}"
 mongoose.connect mongodb_uri
 
