@@ -1,6 +1,6 @@
 {
   "name": "lazyparking-server",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "engines": {
     "node": ">= 0.10"
   },
@@ -18,7 +18,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "grunt test",
-    "postinstall": "bower install"
+    "postinstall": "./node_modules/.bin/bower install"
   },
   "devDependencies": {
     "chai": "^1.9.1",
@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "body-parser": "~1.8.1",
+    "bower": "^1.4.1",
     "coffee-script": "^1.9.3",
     "connect-livereload": "^0.5.0",
     "cookie-parser": "~1.3.3",
