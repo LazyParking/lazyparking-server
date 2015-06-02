@@ -14,6 +14,8 @@ io           = require('socket.io')(http)
 
 realtime     = require('./services/realtime.service')
 
+robots       = require("robots.txt")
+
 # attach socket.io to realtime instance
 realtime.setSocketIo io
 
@@ -37,7 +39,7 @@ app.use bodyParser.json()
 app.use bodyParser.urlencoded(extended: false)
 app.use cookieParser()
 app.use express.static(path.join(__dirname, "public"))
-
+app.use(robots(__dirname + '/public/robots.txt'))
 ###
 Application routes goes here
 
